@@ -23,26 +23,36 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>ID</th>
             <th>SIAPE</th>
             <th>NOME</th>
             <th>E-MAIL</th>
-            
+            <th>STATUS</th>
             <th></th>
         </tr>
         </thead>
         <tbody>
         <?php foreach ($professores as $professore): ?>
             <tr>
-                <td><?= $professore->id ?></td>
                 <td><?= $professore->siape ?></td>
                 <td><?= h($professore->nome) ?></td>
                 <td><?= h($professore->email) ?></td>
 
+                <td>
+                    <?php if($professore->user->status == 1): ?>
+                        <span class="badge text-bg-success">Ativo</span>
+                    <?php else:?>
+                        <span class="badge text-bg-warning">Ativo</span>
+                    <?php endif;?>
+                </td>
+
                 <td class="actions">
-                    <?= $this->Html->link(__(' Abrir'), ['action' => 'view', $professore->id],['class'=>'btn btn-outline-secondary btn-sm']) ?>
-                    <?= $this->Html->link(__(' Editar'), ['action' => 'edit', $professore->id],['class'=>'btn btn-outline-primary btn-sm']) ?>
-                    <?= $this->Form->postLink(__(' Desvincular'), ['action' => 'delete', $professore->id], ['class'=>'btn btn-outline-danger btn-sm','confirm' => __('Are you sure you want to delete # {0}?', $professore->id)]) ?>
+                    <?php
+                        if($professore->user->status == 0){
+                            echo $this->Html->link(__('<i class="fa-solid fa-key"></i> Acesso'), ['controller'=>'users','action' => 'acesso', $professore->user->id],['class'=>'btn btn-outline-success btn-sm', 'confirm'=>'Tem certeza que deseja ativar '.$professore->nome, 'escape'=>false]);
+                        }else{
+                            echo $this->Html->link(__(' Desativar'), ['action' => 'desativar', $professore->id],['class'=>'btn btn-outline-danger btn-sm', 'confirm'=>'Tem certeza que deseja desativar '.$professore->nome]);
+                        }
+                    ?>
                 </td>
             </tr>
         <?php endforeach; ?>

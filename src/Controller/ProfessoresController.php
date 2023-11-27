@@ -46,11 +46,13 @@ class ProfessoresController extends AppController
 
             $professores = $this->Professores->find()
                 ->where(['Professores.nome LIKE' => '%' . $dados['nome'] . '%'])
+                ->contain(['Users'])
                 ->order(['Professores.nome'])->all();
             $this->set(compact('professores'));
         } else {
             $professores = $this->Professores
                 ->find()
+                ->contain(['Users'])
                 ->order(['Professores.nome'])
                 ->all();
             $this->set(compact('professores'));
@@ -80,9 +82,19 @@ class ProfessoresController extends AppController
      */
     public function add()
     {
+        $user = $this->Auth->user();
+        $user['professor'] = $this->getTableLocator()->get('Professores')->find()->where(['users_id'=>$user['id']])->first();
+
         $professore = $this->Professores->newEmptyEntity();
         if ($this->request->is('post')) {
             $professore = $this->Professores->patchEntity($professore, $this->request->getData());
+
+            $usuario = $this->getTableLocator()->get('Users')->newEmptyEntity();
+            $usuario->username = $professore->siape;
+            $usuario->categoria = 'PROFESSOR';
+            $usuario->status = 0;
+            $professore->user = $usuario;
+
             if ($this->Professores->save($professore)) {
                 $this->Flash->success(__('The professore has been saved.'));
 
@@ -91,7 +103,7 @@ class ProfessoresController extends AppController
             $this->Flash->error(__('The professore could not be saved. Please, try again.'));
         }
         $users = $this->Professores->Users->find('list', ['limit' => 200])->all();
-        $this->set(compact('professore', 'users'));
+        $this->set(compact('professore', 'users', 'user'));
     }
 
     /**

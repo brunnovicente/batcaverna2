@@ -42,7 +42,7 @@ class ProfessoresTable extends Table
         parent::initialize($config);
 
         $this->setTable('professores');
-        $this->setDisplayField('id');
+        $this->setDisplayField('nome');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');

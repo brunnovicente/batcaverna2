@@ -31,6 +31,7 @@
                 </div>
             </div>
             <p class="text-center"><a href="/">Voltar ao Site</a></p>
+            <p class="text-center"><a href="/users/libera">Liberar Acesso</a></p>
         </div>
 
     </div>
