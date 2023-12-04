@@ -95,6 +95,9 @@ class TurmasController extends AppController
      */
     public function edit($id = null)
     {
+        $user = $this->Auth->user();
+        $user['professor'] = $this->getTableLocator()->get('Professores')->find()->where(['users_id'=>$user['id']])->first();
+
         $turma = $this->Turmas->get($id, [
             'contain' => [],
         ]);
@@ -107,8 +110,8 @@ class TurmasController extends AppController
             }
             $this->Flash->error(__('The turma could not be saved. Please, try again.'));
         }
-
-        $this->set(compact('turma'));
+        $cursos = $this->Turmas->Cursos->find('list')->all();
+        $this->set(compact('turma', 'user', 'cursos'));
     }
 
     /**

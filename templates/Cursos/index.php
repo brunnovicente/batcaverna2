@@ -34,7 +34,7 @@
                 <td><?= h($curso->sigla) ?></td>
                 <td><?= h($curso->descricao) ?></td>
                 <td><?= $curso->has('professore') ? $this->Html->link($curso->professore->nome, ['controller' => 'Professores', 'action' => 'view', $curso->professore->id]) : '' ?></td>
-                <td class="actions">
+                <td>
                     <?= $this->Html->link(__('<i class="fa-solid fa-pen-to-square"></i> Editar'), ['action' => 'edit', $curso->id], ['class'=>'btn btn-sm btn-outline-primary', 'escape'=>false]) ?>
                 </td>
             </tr>

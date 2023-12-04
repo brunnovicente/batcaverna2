@@ -5,32 +5,27 @@
  */
 ?>
 <div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $turma->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $turma->id), 'class' => 'side-nav-item']
-            ) ?>
-            <?= $this->Html->link(__('List Turmas'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column-responsive column-80">
-        <div class="turmas form content">
-            <?= $this->Form->create($turma) ?>
-            <fieldset>
-                <legend><?= __('Edit Turma') ?></legend>
-                <?php
-                    echo $this->Form->control('nome');
-                    echo $this->Form->control('descricao');
-                    echo $this->Form->control('ano');
-                    echo $this->Form->control('status');
-                    echo $this->Form->control('cursos_id');
-                ?>
-            </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
-            <?= $this->Form->end() ?>
-        </div>
+    <nav class="navbar navbar-light bg-light">
+        <h4><i class="fa-solid fa-layer-group"></i><?= __(' Editar Turma') ?></h4>
+        <ul class="nav justify-content-end">
+            <li class="nav-item">
+                <?= $this->Html->link(__('<i class="fa-solid fa-chevron-left"></i> Voltar'), ['controller'=>'turmas', 'action' => 'index'], ['class' => 'mx-2 btn btn-sm btn-outline-secondary float-end', 'escape'=>false]) ?>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="shadow mx-auto w-50">
+        <?= $this->Form->create($turma) ?>
+        <fieldset>
+            <legend><?= __('Dados da Turma') ?></legend>
+            <?php
+            echo $this->Form->control('nome', ['class'=>'form-control mb-3', 'label'=>'NOME']);
+            echo $this->Form->control('descricao', ['class'=>'form-control mb-3', 'label'=>'DESCRIÇÃO']);
+            echo $this->Form->control('ano', ['class'=>'form-control w-25 mb-3', 'label'=>'ANO']);
+            echo $this->Form->control('cursos_id', ['class'=>'form-select w-25 mb-3', 'label'=>'CURSO','options' => $cursos,]);
+            ?>
+        </fieldset>
+        <?= $this->Form->button(__('Salvar'), ['class'=>'btn btn-success my-2']) ?>
+        <?= $this->Form->end() ?>
     </div>
 </div>

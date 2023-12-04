@@ -4,9 +4,17 @@
  * @var iterable<\App\Model\Entity\Turma> $turmas
  */
 ?>
-<div class="turmas index content">
-    <?= $this->Html->link(__('New Turma'), ['action' => 'add'], ['class' => 'button float-right']) ?>
-    <h3><?= __('Turmas') ?></h3>
+<div>
+    <nav class="navbar navbar-light bg-light">
+        <h4><i class="fa-solid fa-layer-group"></i><?= __(' Turmas') ?></h4>
+        <ul class="nav justify-content-end">
+            <li class="nav-item">
+                <?= $this->Html->link(__('<i class="fa-solid fa-plus"></i> Novo'), ['action' => 'add'], ['class' => 'btn btn-sm btn-outline-success', 'escape'=>false]) ?>
+                <?= $this->Html->link(__('<i class="fa-solid fa-chevron-left"></i> Voltar'), ['controller'=>'principal', 'action' => 'index'], ['class' => 'ms-2 btn btn-sm btn-outline-secondary float-end', 'escape'=>false]) ?>
+            </li>
+        </ul>
+    </nav>
+
     <table class="table table-striped">
         <thead>
         <tr>
@@ -29,9 +37,7 @@
                 <td><?= $turma->status ?></td>
                 <td><?= $turma->curso->descricao ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $turma->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $turma->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $turma->id], ['confirm' => __('Are you sure you want to delete # {0}?', $turma->id)]) ?>
+                    <?= $this->Html->link(__('<i class="fa-solid fa-pen-to-square"></i> Editar'), ['action' => 'edit', $turma->id], ['class'=>'btn btn-sm btn-outline-primary', 'escape'=>false]) ?>
                 </td>
             </tr>
         <?php endforeach; ?>

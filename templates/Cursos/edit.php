@@ -20,9 +20,9 @@
         <fieldset>
             <legend><?= __('Dados do Curso') ?></legend>
             <?php
-            echo $this->Form->control('descricao', ['class'=>'form-control']);
-            echo $this->Form->control('sigla', ['class'=>'form-control']);
-            echo $this->Form->control('professores_id', ['class'=>'form-select','options' => $professores, 'label'=>'COORDENADOR', 'empty' => true]);
+            echo $this->Form->control('descricao', ['class'=>'form-control mb-2']);
+            echo $this->Form->control('sigla', ['class'=>'form-control mb-2']);
+            echo $this->Form->control('professores_id', ['class'=>'form-select mb-2','options' => $professores, 'label'=>'COORDENADOR', 'empty' => true]);
             ?>
         </fieldset>
         <?= $this->Form->button(__('Salvar'), ['class'=>'btn btn-success my-2']) ?>
