@@ -49,7 +49,7 @@ class AppController extends Controller
                 'authorize' => ['Controller'],
                 'loginRedirect' => ['controller'=>'principal', 'action'=>'index'],
                 'logoutRedirect' => ['controller' => 'users', 'action'=>'login'],
-                'authError' => __('Entre com usuário e senha para realizar esta acão.')
+                'authError' => __('Você não tem autorização para acessar.')
             ]
         );
 

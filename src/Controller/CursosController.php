@@ -18,7 +18,7 @@ class CursosController extends AppController
             return true;
         } else {
             if (in_array($user['categoria'], ['COORDENADOR'])) {
-                if (in_array($this->request->getParam('action'), ['view','senha','login','logout','acesso'])) {
+                if (in_array($this->request->getParam('action'), ['index','login','logout'])) {
                     return true;
                 }
             } else {
