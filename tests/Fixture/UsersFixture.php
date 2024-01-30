@@ -23,9 +23,10 @@ class UsersFixture extends TestFixture
                 'username' => 'Lorem ipsum dolor sit amet',
                 'password' => 'Lorem ipsum dolor sit amet',
                 'categoria' => 'Lorem ipsum dolor ',
-                'created' => '2023-11-23 01:55:57',
-                'modified' => '2023-11-23 01:55:57',
                 'status' => 1,
+                'created' => '2024-01-26 16:52:47',
+                'modified' => '2024-01-26 16:52:47',
+                'foto' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
             ],
         ];
         parent::init();

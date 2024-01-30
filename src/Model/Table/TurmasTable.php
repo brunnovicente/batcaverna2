@@ -42,7 +42,7 @@ class TurmasTable extends Table
         parent::initialize($config);
 
         $this->setTable('turmas');
-        $this->setDisplayField('id');
+        $this->setDisplayField('descricao');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');

@@ -4,8 +4,8 @@
  * @var \App\Model\Entity\Professore $professore
  */
 ?>
-<div class="col-md-5 mx-auto">
-
+<div class="container mx-auto">
+    <?= $this->Form->create($professore) ?>
     <nav class="navbar navbar-light bg-light">
         <h4><i class="fas fa-user-tie"></i><?= __(' Cadastro de Professor') ?></h4>
         <ul class="nav justify-content-end">
@@ -16,12 +16,32 @@
     </nav>
 
     <div class="shadow p-2">
-        <?= $this->Form->create($professore) ?>
-        <?= $this->Form->control('siape', ['label'=>'SIAPE','class'=>'form-control mb-3 w-25'])?>
-        <?= $this->Form->control('nome', ['label'=>'NOME DO PROFESSOR','class'=>'form-control mb-3'])?>
-        <?= $this->Form->control('email', ['label'=>'E-MAIL PROFESSOR','class'=>'form-control mb-3'])?>
-        <?= $this->Form->button(__('Salvar'), ['class'=>'btn btn-success mb-2']) ?>
-        <?= $this->Form->end() ?>
+        <div class="row">
+            <div class="col-sm-3">
+                <?= $this->Form->control('siape', ['label'=>'SIAPE','class'=>'form-control mb-3'])?>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <?= $this->Form->control('nome', ['label'=>'NOME DO PROFESSOR','class'=>'form-control mb-3'])?>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <?= $this->Form->control('email', ['label'=>'E-MAIL PROFESSOR','class'=>'form-control mb-3'])?>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <?= $this->Form->button(__('Salvar'), ['class'=>'btn btn-success mb-2']) ?>
+            </div>
+        </div>
     </div>
 
+
+
+    <?= $this->Form->end() ?>
 </div>

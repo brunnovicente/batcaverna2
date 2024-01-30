@@ -17,7 +17,7 @@ class ProfessoresController extends AppController
             return true;
         } else {
             if(in_array($user['categoria'], ['COORDENADOR'])){
-                if (in_array($this->request->getParam('action'), ['view','senha','login','logout','acesso'])) {
+                if (in_array($this->request->getParam('action'), ['index'])) {
                     return true;
                 }
             }else{
@@ -115,8 +115,12 @@ class ProfessoresController extends AppController
      */
     public function edit($id = null)
     {
+
+        $user = $this->Auth->user();
+        $user['professor'] = $this->getTableLocator()->get('Professores')->find()->where(['users_id'=>$user['id']])->first();
+
         $professore = $this->Professores->get($id, [
-            'contain' => [],
+            'contain' => ['Users'],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $professore = $this->Professores->patchEntity($professore, $this->request->getData());
@@ -128,7 +132,7 @@ class ProfessoresController extends AppController
             $this->Flash->error(__('The professore could not be saved. Please, try again.'));
         }
         $users = $this->Professores->Users->find('list', ['limit' => 200])->all();
-        $this->set(compact('professore', 'users'));
+        $this->set(compact('professore', 'users', 'user'));
     }
 
     /**

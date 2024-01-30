@@ -36,12 +36,12 @@ class DiariosController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Turmas', 'Professores'],
-        ];
-        $diarios = $this->paginate($this->Diarios);
+        $user = $this->Auth->user();
+        $user['professor'] = $this->getTableLocator()->get('Professores')->find()->where(['users_id'=>$user['id']])->first();
 
-        $this->set(compact('diarios'));
+        $diarios = $this->Diarios->find()->contain(['Turmas.Cursos','Professores'])->all();
+
+        $this->set(compact('diarios','user'));
     }
 
     /**
@@ -67,6 +67,9 @@ class DiariosController extends AppController
      */
     public function add()
     {
+        $user = $this->Auth->user();
+        $user['professor'] = $this->getTableLocator()->get('Professores')->find()->where(['users_id'=>$user['id']])->first();
+
         $diario = $this->Diarios->newEmptyEntity();
         if ($this->request->is('post')) {
             $diario = $this->Diarios->patchEntity($diario, $this->request->getData());
@@ -79,7 +82,7 @@ class DiariosController extends AppController
         }
         $turmas = $this->Diarios->Turmas->find('list', ['limit' => 200])->all();
         $professores = $this->Diarios->Professores->find('list', ['limit' => 200])->all();
-        $this->set(compact('diario', 'turmas', 'professores'));
+        $this->set(compact('diario', 'turmas', 'professores','user'));
     }
 
     /**

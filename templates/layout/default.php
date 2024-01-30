@@ -28,11 +28,14 @@ $nome = explode(" ", $user['professor']->nome)[0];
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <?= $this->Html->css(['bootstrap.min', 'all.min']) ?>
+    <?= $this->Html->css(['bootstrap.min', 'all.min','croppie.min']) ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->Html->script('bootstrap.bundle.min.js')?>
+    <?= $this->Html->script('croppie.min.js')?>
+    <?= $this->Html->script('preview.js')?>
+    <?= $this->Html->script('jquery-3.6.4.min.js')?>
     <?= $this->fetch('script') ?>
 
 </head>
@@ -47,7 +50,7 @@ $nome = explode(" ", $user['professor']->nome)[0];
                     <i class="fas fa-user-tie"></i> <?= $nome ?>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="#"><i class="far fa-id-card"></i> Meus Dados</a></li>
+                    <li><a class="dropdown-item" href="/users/view/<?= $user['id'] ?>"><i class="far fa-id-card"></i> Meus Dados</a></li>
                     <li><a class="dropdown-item" href="#"><i class="fas fa-key"></i> Alterar Senha</a></li>
                     <div class="dropdown-divider"></div>
                     <li>

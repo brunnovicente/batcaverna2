@@ -13,8 +13,10 @@ use Cake\ORM\Entity;
  * @property string|null $username
  * @property string|null $password
  * @property string|null $categoria
+ * @property int|null $status
  * @property \Cake\I18n\FrozenTime|null $created
  * @property \Cake\I18n\FrozenTime|null $modified
+ * @property string|null $foto
  */
 class User extends Entity
 {
@@ -31,9 +33,10 @@ class User extends Entity
         'username' => true,
         'password' => true,
         'categoria' => true,
+        'status' => true,
         'created' => true,
         'modified' => true,
-        'status' => true,
+        'foto' => true,
     ];
 
     /**

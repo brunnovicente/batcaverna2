@@ -69,6 +69,15 @@ class UsersTable extends Table
             ->maxLength('categoria', 20)
             ->allowEmptyString('categoria');
 
+        $validator
+            ->integer('status')
+            ->allowEmptyString('status');
+
+        $validator
+            ->scalar('foto')
+            ->maxLength('foto', 4294967295)
+            ->allowEmptyString('foto');
+
         return $validator;
     }
 
