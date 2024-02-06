@@ -233,14 +233,14 @@ return [
              * The keys host, port, timeout, username, password, client and tls
              * are used in SMTP transports
              */
-            'host' => 'localhost',
-            'port' => 25,
+            'host' => 'smtp.hostinger.com',
+            'port' => 587,
             'timeout' => 30,
             /*
              * It is recommended to set these options through your environment or app_local.php
              */
-            //'username' => null,
-            //'password' => null,
+            'username' => 'brunovicente@brunovicente.tech',
+            'password' => 'Bat#1104',
             'client' => null,
             'tls' => false,
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),

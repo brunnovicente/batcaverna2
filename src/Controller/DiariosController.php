@@ -38,8 +38,8 @@ class DiariosController extends AppController
     {
         $user = $this->Auth->user();
         $user['professor'] = $this->getTableLocator()->get('Professores')->find()->where(['users_id'=>$user['id']])->first();
-
-        $diarios = $this->Diarios->find()->contain(['Turmas.Cursos','Professores'])->all();
+        $curso = $this->getTableLocator()->get('Cursos')->find()->where(['professores_id'=>$user['professor']->id])->first();
+        $diarios = $this->Diarios->find()->contain(['Turmas.Cursos','Professores'])->where(['Turmas.cursos_id'=>$curso->id])->all();
 
         $this->set(compact('diarios','user'));
     }

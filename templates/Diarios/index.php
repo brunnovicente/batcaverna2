@@ -20,9 +20,9 @@
         <tr>
             <th>CÓDIGO</th>
             <th>DESCRIÇÃO</th>
+            <th>TURMA</th>
             <th>CURSO</th>
             <th>PROFESSOR</th>
-            <th>TURMA</th>
             <th></th>
         </tr>
         </thead>
@@ -32,9 +32,10 @@
 
                 <td><?= h($diario->codigo) ?></td>
                 <td><?= h($diario->descricao) ?></td>
+                <td><?= $diario->turma->descricao ?></td>
                 <td><?= $diario->turma->curso->descricao ?></td>
                 <td><?= $diario->professore->nome ?></td>
-                <td><?= $diario->turma->descricao ?></td>
+
 
                 <td class="actions">
                     <?= $this->Html->link(__('<i class="fa-solid fa-pen-to-square"></i> Editar'), ['action' => 'edit', $diario->id], ['class'=>'btn btn-sm btn-outline-primary', 'escape'=>false]) ?>

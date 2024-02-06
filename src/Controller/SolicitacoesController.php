@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Event\EventInterface;
+use Cake\Mailer\Mailer;
 
 /**
  * Solicitacoes Controller
@@ -225,12 +226,12 @@ class SolicitacoesController extends AppController
     public function add($id)
     {
         $this->viewBuilder()->setLayout('home');
-        //$user = $this->Auth->user();
+        $user = $this->Auth->user();
         //$user['professor'] = $this->getTableLocator()->get('Professores')->find()->where(['users_id'=>$user['id']])->first();
 
 
-        $user = $this->Auth->user();
-        $diario = $this->getTableLocator()->get('Diarios')->get($id,['contain'=>['Professores', 'Turmas.Cursos']]);
+        $diario = $this->getTableLocator()->get('Diarios')->get($id,['contain'=>['Professores', 'Turmas.Cursos.Professores']]);
+        //$curso = $this->getTableLocator()->get('Cursos')->get($diario->turma->curso->id,['contain'=>['Professores', 'Turmas.Cursos']]);
         //$professores = $this->getTableLocator()->get('Professores')->find()->all();
 
 
@@ -287,8 +288,9 @@ class SolicitacoesController extends AppController
                 $this->Flash->error(__('Selecione os dias!'));
             }elseif ($this->Solicitacoes->save($solicitacao)) {
 
-                //$this->mensagem($solicitacao);
-                //$this->lembrete_coordenador($solicitacao);
+                $this->mensagem($solicitacao);
+                $this->lembrete_coordenador($solicitacao, $diario->turma->curso->professore->email);
+
                 $this->Flash->success(__('Solicitação realizada com sucesso!.'));
                 if($this->Auth->user()== null){
                     return $this->redirect(['controller'=>'solicitacoes','action' => 'view']);
@@ -304,6 +306,65 @@ class SolicitacoesController extends AppController
         //$this->set(compact('professores'));
 
     }
+
+    public function mensagem($solicitacao){
+        $msg = new Mailer('default');
+        $msg->setEmailFormat('html');
+        $msg->setFrom(['brunovicente@brunovicente.tech'=>'BatCaverna'])
+            ->setTo($solicitacao->diario->professore->email)
+            ->setSubject('Nova Solicitação de Abertura de Diário')
+            ->deliver('Solicitação de Abertura de Diário Realizada.<br><br>'.
+                'Dados da Solicitação <br>'.
+                '<strong>TURMA: </strong>'.$solicitacao->diario->turma->descricao.'<br>'.
+                '<strong>DIÁRIO: </strong>'.$solicitacao->diario->turma->descricao.'<br>'.
+                '<strong>DIA: </strong>'.$solicitacao->dia.'<br>'.
+                '<strong>DATA: </strong>'.$solicitacao->data.'<br>'.
+                '<strong>HORÁRIOS: </strong>'.$solicitacao->horarios.'<br>'.
+                '<strong>TIPO: </strong>'.$solicitacao->tipo.'<br>'.
+                '<strong>JUSTIFICATIVA: </strong> '.$solicitacao->justificativa.'<br>'
+            );
+
+
+
+    }//Fim da Mensagem
+
+    public function lembrete_coordenador($solicitacao, $email){
+        $msg = new Mailer('default');
+        $msg->setEmailFormat('html');
+
+        $msg->setFrom(['brunovicente@brunovicente.tech'=>'BatCaverna'])
+            ->setTo($email)
+            ->setSubject('Nova Solicitação de Diário')
+            ->deliver('Nova Solicitação de Abertura de Diário Realizada.<br><br>'.
+                'Dados da Solicitação <br>'.
+                '<strong>TURMA: </strong>'.$solicitacao->diario->turma->descricao.'<br>'.
+                '<strong>DIÁRIO: </strong>'.$solicitacao->diario->descricao.'<br>'.
+                '<strong>DIA: </strong>'.$solicitacao->dia.'<br>'.
+                '<strong>DATA: </strong>'.$solicitacao->data.'<br>'.
+                '<strong>HORÁRIOS: </strong>'.$solicitacao->horarios.'<br>'.
+                '<strong>TIPO: </strong>'.$solicitacao->tipo.'<br>'.
+                '<strong>JUSTIFICATIVA: </strong> '.$solicitacao->justificativa.'<br><br>'.
+                '<a href="http://batcaverna.tech/solicitacoes/pendentes">Veja a solicitação Aqui!</a>'
+            );
+    }
+
+    public function msg_abrir($solicitacao){
+        $msg = new Mailer('default');
+        $msg->setEmailFormat('html');
+        $msg->setFrom(['brunovicente@brunovicente.tech'=>'BatCaverna'])
+            ->setTo($solicitacao->diario->professore->email)
+            ->setSubject('Abertura de Diário')
+            ->deliver('Sua Solicitação de Abertura foi deferida. Você tem 3 (três) dias para registrar suas aulas, depois disso deverá solicitar novamente a abertura do diário.<br><br>'.
+                'Dados da Solicitação <br>'.
+                '<strong>TURMA: </strong>'.$solicitacao->diario->turma->descricao.'<br>'.
+                '<strong>DIÁRIO: </strong>'.$solicitacao->diario->descricao.'<br>'.
+                '<strong>DIA: </strong>'.$solicitacao->dia.'<br>'.
+                '<strong>DATA: </strong>'.$solicitacao->data.'<br>'.
+                '<strong>HORÁRIOS: </strong>'.$solicitacao->horarios.'<br>'.
+                '<strong>TIPO: </strong>'.$solicitacao->tipo.'<br>'.
+                '<strong>JUSTIFICATIVA: </strong> '.$solicitacao->justificativa.'<br>'
+            );
+    }//Fim de msg_abrir
 
     /**
      * Edit method

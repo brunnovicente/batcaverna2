@@ -40,7 +40,7 @@ class TurmasController extends AppController
         $user = $this->Auth->user();
         $user['professor'] = $this->getTableLocator()->get('Professores')->find()->where(['users_id'=>$user['id']])->first();
 
-        $turmas =$this->Turmas->find()->contain(['Cursos'])->all();
+        $turmas =$this->Turmas->find()->contain(['Cursos'])->where(['Cursos.professores_id'=>$user['professor']->id])->all();
 
         $this->set(compact('turmas','user'));
     }
