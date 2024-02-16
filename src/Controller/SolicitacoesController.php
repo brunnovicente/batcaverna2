@@ -149,6 +149,7 @@ class SolicitacoesController extends AppController
         $this->viewBuilder()->setLayout('home');
 
 
+
         $solicitacao = $this->Solicitacoes->newEmptyEntity();
 
         if($this->request->is('post')){
@@ -156,7 +157,8 @@ class SolicitacoesController extends AppController
             $solicitaco = $this->Solicitacoes->patchEntity($solicitacao, $this->request->getData());
             $dados = $this->request->getData();
 
-            //$diario = $this->getTableLocator()->get('Turma')->get($id);
+            $turma = $this->getTableLocator()->get('Turmas')->get($id, ['contain'=>['Cursos.Professores']]);
+            $diario = $this->getTableLocator()->get('Diarios')->get($solicitaco->diarios_id, ['contain'=>['Turmas','Professores']]);
             //$solicitacao->diario = $diario;
 
             $existe = false;
@@ -197,9 +199,9 @@ class SolicitacoesController extends AppController
             if(!$existe){
                 $this->Flash->error(__('Selecione os dias!'));
             }elseif ($this->Solicitacoes->save($solicitacao)) {
-
-                //$this->mensagem($solicitacao);
-                //$this->lembrete_coordenador($solicitacao);
+                $solicitaco->diario = $diario;
+                $this->mensagem($solicitacao);
+                $this->lembrete_coordenador($solicitacao, $turma->curso->professore->email);
                 $this->Flash->success(__('Solicitação realizada com sucesso!.'));
                 if($this->Auth->user()== null){
                     return $this->redirect(['controller'=>'solicitacoes','action' => 'view']);
