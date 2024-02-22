@@ -26,7 +26,7 @@ $nome = explode(" ", $user['professor']->nome)[0];
         <?= $cakeDescription ?>:
         <?= $this->fetch('title') ?>
     </title>
-    <?= $this->Html->meta('icon') ?>
+    <?= $this->Html->meta('icon', '/img/batman.png', array('type' => 'icon')) ?>
 
     <?= $this->Html->css(['bootstrap.min', 'all.min','croppie.min']) ?>
 
