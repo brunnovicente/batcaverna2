@@ -30,8 +30,9 @@
         <!--            --><?php //= $this->Html->link(__(' Cadastrar'), ['controller'=>'professores','action' => 'cadastrar',$professor->id],['class'=>'btn btn-outline-primary btn-sm m-1 <i fas fa-user-plus']) ?>
         <!--        </p>-->
         <!--    </div>-->
-        <div class="bg-light my-3">
+        <div class="bg-light my-3 py-2 px-1 d-flex justify-content-between">
             <h5>Prof. <?php echo $docente->nome;?></h5>
+            <?= $this->Html->link('<i class="fas fa-folder"></i> Minhas Solicitações', ['controller'=>'solicitacoes','action'=>'listar', $docente->id],['class'=>'btn btn-sm btn-outline-dark', 'escape'=>false]) ?>
         </div>
         <table class="table table-striped">
             <tr>

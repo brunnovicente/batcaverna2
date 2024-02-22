@@ -25,10 +25,11 @@
         <?php
 
         $status = '';
-        if ($solicitacao->stauts == 0) {
+
+        if ($solicitacao->status == 0) {
             $status = '<span class="text-danger">Pendente</span>';
         } else if ($solicitacao->status == 1) {
-            $status = '<span class="text-primary">Aberta</span>';
+            $status = '<span class="text-primary">Aberta </span>';
         } else {
             $status = '<span class="text-success">Fechada</span>';
         }
@@ -65,7 +66,7 @@
                                         <?= $this->Html->link('<i class="fab fa-speakap"></i> SUAP', $solicitacao->diario->link, ['target'=>'_blank','class'=>'btn btn-sm btn-outline-dark mx-2','escape'=>false]) ?>
                                     </li>
                                     <li class="nav-item">
-                                        <?= $this->Html->link('<i class="fa-regular fa-circle-xmark"></i> Fechar', ['controller'=>'solicitacoes','action'=>'fechar', $solicitacao->id],['class'=>'btn btn-sm btn-outline-dark', 'confirm'=>'Tem certeza que FINALIZAR  a Solicitação?', 'escape'=>false]) ?>
+                                        <?= $this->Html->link('<i class="fa-regular fa-circle-xmark"></i> Fechar', ['controller'=>'solicitacoes','action'=>'fechar', $solicitacao->id],['class'=>'btn btn-sm btn-outline-danger', 'confirm'=>'Tem certeza que FINALIZAR  a Solicitação?', 'escape'=>false]) ?>
                                     </li>
                                 </ul>
                             </div>
@@ -98,7 +99,7 @@
                     <?php
                     $dias = (new DateTime(''.$solicitacao->data->format('y-m-d')))->diff((new DateTime()))->d
                     ?>
-                    <?php if($dias > 3):?>
+                    <?php if($dias > 2):?>
                         <h3><span class="badge bg-danger">Fechar</span></h3>
                     <?php endif;?>
                 </div>

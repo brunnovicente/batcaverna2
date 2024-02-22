@@ -1,27 +1,20 @@
-<?php
-/**
- * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\Turma> $turmas
- */
-?>
-
 <style>
     .linha:hover{
         background-color: #DCDCDC;
     }
 </style>
 
-<div class="container-fluid m-0 p-0">
-    <nav class="navbar navbar-light bg-light">
-        <h4 class="text-danger"><i class="fas fa-folder"></i><?= __(' Solicitações Pendentes') ?></h4>
+<div class="container mx-auto">
+    <nav class="my-2 p-2 navbar navbar-light bg-light">
+        <h4 class="text-danger"><i class="fas fa-folder"></i><?= __(' Minhas Solicitações') ?></h4>
         <ul class="nav justify-content-end">
             <li class="nav-item">
-                <?= $this->Html->link(__('<i class="fa-solid fa-chevron-left"></i> Voltar'), ['controller'=>'principal', 'action' => 'index'], ['class' => 'ms-2 btn btn-sm btn-outline-secondary', 'escape'=>false]) ?>
+                <?= $this->Html->link(__('<i class="fa-solid fa-chevron-left"></i> Voltar'), ['controller'=>'solicitacoes', 'action' => 'view'], ['class' => 'ms-2 btn btn-sm btn-outline-secondary', 'escape'=>false]) ?>
             </li>
         </ul>
     </nav>
 
-    <?php foreach ($pendentes as $solicitacao):?>
+    <?php foreach ($solicitacoes as $solicitacao):?>
 
         <?php
 
@@ -63,13 +56,7 @@
                             <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
                                 <ul class="navbar-nav">
                                     <li class="nav-item">
-                                        <?= $this->Html->link('<i class="fab fa-speakap"></i> SUAP', $solicitacao->diario->link, ['target'=>'_blank','class'=>'btn btn-sm btn-outline-dark mx-2', 'escape'=>false]) ?>
-                                    </li>
-                                    <li class="nav-item">
-                                        <?= $this->Html->link('<i class="fa-solid fa-lock-open"></i> Abrir', ['controller'=>'solicitacoes','action'=>'abrir', $solicitacao->id],['class'=>'btn btn-sm btn-outline-success','escape'=>false,'confirm'=>'Tem certeza que deseja ABRIR esta Solicitação?']) ?>
-                                    </li>
-                                    <li class="nav-item">
-                                        <?= $this->Html->link( '<i class="fa-solid fa-trash-can"></i> Excluir', ['controller'=>'solicitacoes','action' => 'delete', $solicitacao->id], ['class'=>'btn btn-outline-danger btn-sm mx-2','escape'=>false,'confirm' => __('Tem certeza que deseja remover a Solicitação?', $solicitacao->id)]) ?>
+                                        <?= $this->Html->link('<i class="fa-regular fa-bell"></i> Lembrete',['controller'=>'solicitacoes','action'=>'lembrete',$solicitacao->id],['class'=>'btn btn-sm btn-outline-dark mx-2', 'escape'=>false]) ?>
                                     </li>
                                 </ul>
                             </div>
@@ -97,14 +84,6 @@
                     <p>
                         <?= $solicitacao->tipo ?>
                     </p>
-                </div>
-                <div class="col">
-                    <?php
-                        $dias = ((new DateTime())->diff(new DateTime(''.$solicitacao->data->format('y-m-d'))))->d;
-                    ?>
-                    <?php if($dias < 1):?>
-                    <h3><span class="badge bg-success">Abrir</span></h3>
-                    <?php endif;?>
                 </div>
 
             </div>

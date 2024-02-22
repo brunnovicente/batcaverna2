@@ -28,7 +28,7 @@
         <?php
 
             $status = '';
-            if ($solicitacao->stauts == 0) {
+            if ($solicitacao->status == 0) {
                 $status = '<span class="text-danger">Pendente</span>';
             } else if ($solicitacao->status == 1) {
                 $status = '<span class="text-primary">Aberta</span>';
@@ -64,12 +64,29 @@
                     <div class="container-fluid">
                         <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
                             <ul class="navbar-nav">
-                                <li class="nav-item">
-                                    <a class="btn btn-sm btn-outline-dark mx-2" href=""><i class="fab fa-speakap"></i> Suap</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="btn btn-sm btn-outline-dark" href="#"><i class="fa-solid fa-lock-open"></i> Abrir</a>
-                                </li>
+
+                                <?php if($solicitacao->status == 0):?>
+                                    <li class="nav-item">
+                                        <a class="btn btn-sm btn-outline-dark mx-2" href=""><i class="fab fa-speakap"></i> Suap</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="btn btn-sm btn-outline-success" href="#"><i class="fa-solid fa-lock-open"></i> Abrir</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <?= $this->Html->link( '<i class="fa-solid fa-trash-can"></i> Excluir', ['controller'=>'solicitacoes','action' => 'delete', $solicitacao->id], ['class'=>'btn btn-outline-danger btn-sm mx-2','escape'=>false,'confirm' => __('Tem certeza que deseja remover a Solicitação?', $solicitacao->id)]) ?>
+                                    </li>
+                                <?php elseif ($solicitacao->status == 1):?>
+                                    <li class="nav-item">
+                                        <a class="btn btn-sm btn-outline-dark mx-2" href=""><i class="fab fa-speakap"></i> Suap</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="btn btn-sm btn-outline-danger" href="#"><i class="fa-regular fa-circle-xmark"></i> Fechar</a>
+                                    </li>
+                                <?php else:?>
+                                    <li class="nav-item">
+                                        <?= $this->Html->link( '<i class="fa-solid fa-trash-can"></i> Excluir', ['controller'=>'solicitacoes','action' => 'delete', $solicitacao->id], ['class'=>'btn btn-outline-danger btn-sm mx-2','escape'=>false,'confirm' => __('Tem certeza que deseja remover a Solicitação?', $solicitacao->id)]) ?>
+                                    </li>
+                                <?php endif;?>
                             </ul>
                         </div>
                     </div>

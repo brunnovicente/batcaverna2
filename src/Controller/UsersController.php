@@ -27,7 +27,7 @@ class UsersController extends AppController
             return true;
         } else {
             if (in_array($user['categoria'], ['COORDENADOR'])) {
-                if (in_array($this->request->getParam('action'), ['view','senha','login','logout','acesso'])) {
+                if (in_array($this->request->getParam('action'), ['alterarsenha','view','senha','login','logout','acesso'])) {
                     return true;
                 }
             } else {
@@ -37,6 +37,29 @@ class UsersController extends AppController
             }
         }
         return false;
+    }
+
+    public function alterarsenha(){
+        $user = $this->Auth->user();
+        $user['professor'] = $this->getTableLocator()->get('Professores')
+            ->find()
+            ->contain(['Users'])
+            ->where(['Professores.users_id'=>$user['id']])
+            ->first();
+        if($this->request->is('post')){
+            $data = $this->request->getData();
+            if($data['senha1'] == $data['senha2']){
+                $usuario = $this->Users->get($this->Auth->user()['id']);
+                $usuario->password = $data['senha1'];
+                $this->Users->save($usuario);
+                $this->Flash->success('Senha alterada com sucesso.');
+                $this->redirect(['controller'=>'principal','action'=>'index']);
+            }else{
+                $this->Flash->error('Repita a mesma senha!');
+            }
+        }
+        $this->set(compact('user'));
+
     }
 
     /**

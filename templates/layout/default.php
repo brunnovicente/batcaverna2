@@ -51,7 +51,7 @@ $nome = explode(" ", $user['professor']->nome)[0];
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" href="/users/view/<?= $user['id'] ?>"><i class="far fa-id-card"></i> Meus Dados</a></li>
-                    <li><a class="dropdown-item" href="#"><i class="fas fa-key"></i> Alterar Senha</a></li>
+                    <li><a class="dropdown-item" href="/users/alterarsenha"><i class="fas fa-key"></i> Alterar Senha</a></li>
                     <div class="dropdown-divider"></div>
                     <li>
 
