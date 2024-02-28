@@ -145,7 +145,7 @@ class SolicitacoesController extends AppController
         $solicitacao->status = 2;
         if($this->Solicitacoes->save($solicitacao)){
             $this->Flash->success('Solicitação finalizada com sucesso');
-            $this->redirect(['controller'=>'principal','action'=>'index']);
+            $this->redirect(['controller'=>'solicitacoes','action'=>'abertas']);
         }
     }
 

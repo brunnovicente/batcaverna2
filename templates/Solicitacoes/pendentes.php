@@ -22,7 +22,6 @@
     </nav>
 
     <?php foreach ($pendentes as $solicitacao):?>
-
         <?php
 
         $status = '';
@@ -33,82 +32,78 @@
         } else {
             $status = '<span class="text-success">Fechada</span>';
         }
-
         ?>
 
-        <div class="container-fluid border border-1 rounded rounded-2 my-3 p-2 linha shadow">
-            <div class="row p-0">
-                <div class="col-3">
-                    <h5><strong>DIÁRIO: </strong> <?= $solicitacao->diario->descricao ?></h5>
-                </div>
-
-                <div class="col-2">
-                    <h5><strong>DATA: </strong> <?= $solicitacao->data ?></h5>
-                </div>
-
-                <div class="col-1">
-                    <h5><strong>DIA: </strong> <?= $solicitacao->dia ?></h5>
-                </div>
-
-                <div class="col-2">
-                    <h5><strong>HORÁRIO: </strong> <?= $solicitacao->horarios ?></h5>
-                </div>
-
-                <div class="col-2">
-                    <h5><strong>STATUS: </strong> <?= $status ?></h5>
-                </div>
-                <div class="col-2">
-                    <nav class="navbar navbar-expand-lg">
-                        <div class="container-fluid">
-                            <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
-                                <ul class="navbar-nav">
-                                    <li class="nav-item">
-                                        <?= $this->Html->link('<i class="fab fa-speakap"></i> SUAP', $solicitacao->diario->link, ['target'=>'_blank','class'=>'btn btn-sm btn-outline-dark mx-2', 'escape'=>false]) ?>
-                                    </li>
-                                    <li class="nav-item">
-                                        <?= $this->Html->link('<i class="fa-solid fa-lock-open"></i> Abrir', ['controller'=>'solicitacoes','action'=>'abrir', $solicitacao->id],['class'=>'btn btn-sm btn-outline-success','escape'=>false,'confirm'=>'Tem certeza que deseja ABRIR esta Solicitação?']) ?>
-                                    </li>
-                                    <li class="nav-item">
-                                        <?= $this->Html->link( '<i class="fa-solid fa-trash-can"></i> Excluir', ['controller'=>'solicitacoes','action' => 'delete', $solicitacao->id], ['class'=>'btn btn-outline-danger btn-sm mx-2','escape'=>false,'confirm' => __('Tem certeza que deseja remover a Solicitação?', $solicitacao->id)]) ?>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </nav>
-                </div>
+    <div class="container-fluid border border-1 rounded rounded-2 my-3 p-2 linha shadow">
+        <div class="row">
+            <div class="col-4">
+                <STRONG>DIÁRIO: </STRONG>
+                <h5><?= $solicitacao->diario->descricao ?></h5>
             </div>
-            <div class="border-bottom my-1"></div>
-            <div class="row p-2">
-                <div class="col">
-                    <strong>JUSTIFICATIVA</strong>
-                    <p>
-                        <?= $solicitacao->justificativa ?>
-                    </p>
+            <div class="col-2">
+                <STRONG>TURMA: </STRONG>
+                <h5><?= $solicitacao->diario->turma->descricao ?></h5>
+            </div>
+            <div class="col-3">
+                <STRONG>PROFESSOR: </STRONG>
+                <h5><?= $solicitacao->diario->professore->nome ?></h5>
+            </div>
+            <div class="col-1">
+                <STRONG>STATUS: </STRONG>
+                <h5><?= $status ?></h5>
+            </div>
+            <div class="col-1">
+                <?php
+                $dias = ((new DateTime())->diff(new DateTime(''.$solicitacao->data->format('y-m-d'))))->d;
+                ?>
+                <?php //if($dias < 1):?>
+                <h3><span class="badge bg-success">Abrir</span></h3>
+                <?php //endif;?>
+            </div>
+            <div class="col-1 d-flex justify-content-end">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <?= $this->Html->link('<i class="fab fa-speakap"></i> SUAP', $solicitacao->diario->link, ['target'=>'_blank','class'=>'dropdown-item', 'escape'=>false]) ?>
+                        </li>
+                        <li>
+                            <?= $this->Html->link('<i class="fa-solid fa-lock-open"></i> Abrir', ['controller'=>'solicitacoes','action'=>'abrir', $solicitacao->id],['class'=>'dropdown-item text-success','escape'=>false,'confirm'=>'Tem certeza que deseja ABRIR esta Solicitação?']) ?>
+                        </li>
+                        <li>
+                            <?= $this->Html->link( '<i class="fa-solid fa-trash-can"></i> Excluir', ['controller'=>'solicitacoes','action' => 'delete', $solicitacao->id], ['class'=>'text-danger dropdown-item','escape'=>false,'confirm' => __('Tem certeza que deseja remover a Solicitação?', $solicitacao->id)]) ?>
+                        </li>
+                    </ul>
                 </div>
-                <div class="col">
-                    <strong>PROFESSOR</strong>
-                    <p>
-                        <?= $solicitacao->diario->professore->nome ?>
-                    </p>
-                </div>
-
-                <div class="col">
-                    <strong>TIPO</strong>
-                    <p>
-                        <?= $solicitacao->tipo ?>
-                    </p>
-                </div>
-                <div class="col">
-                    <?php
-                        $dias = ((new DateTime())->diff(new DateTime(''.$solicitacao->data->format('y-m-d'))))->d;
-                    ?>
-                    <?php if($dias < 1):?>
-                    <h3><span class="badge bg-success">Abrir</span></h3>
-                    <?php endif;?>
-                </div>
-
             </div>
         </div>
+        <hr>
+        <div class="row">
+            <div class="col">
+                <strong>DATA: </strong>
+                <?= $solicitacao->data ?>
+            </div>
+            <div class="col">
+                <strong>DIA: </strong>
+                <?= $solicitacao->dia ?>
+            </div>
+            <div class="col">
+                <strong>HORÁRIO: </strong> <?= $solicitacao->horarios ?>
+            </div>
+            <div class="col">
+                <strong>TIPO: </strong> <?= $solicitacao->tipo ?>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <strong>JUSTIFICATIVA: </strong> <?= $solicitacao->justificativa ?>
+            </div>
+        </div>
+    </div>
+
+
     <?php endforeach;?>
 
 </div>
