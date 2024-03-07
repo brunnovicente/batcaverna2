@@ -24,7 +24,7 @@ $tipo = array(
 );
 //$permuta->turmas_id = $turma->id;
 ?>
-<div class="col-md-5 mx-auto mb-2 shadow pb-2">
+<div class="col-md-5 mx-auto mb-2 shadow pb-2" id="formulario">
     <div class="row p-3">
         <h3 class="col-10">
             <?= __('Nova Solicitação de Abertura de Aula') ?>
@@ -89,9 +89,20 @@ $tipo = array(
     </div>
 </div>
 
-<script>
-    function escrever(label, campo){
+<div id="carregando" style="display: none">
+    <h5 class="text-center">Enviando Solicitação ao Batcaverna...</h5>
+</div>
 
-        campo.value = campo.value + label.innerText + ' | ';
+<script>
+
+    var formulario = document.getElementById('formulario');
+
+    formulario.onsubmit = function (){
+        var formulario = document.getElementById('formulario');
+        var carregando = document.getElementById('carregando');
+        formulario.style.display = 'none';
+        carregando.style.display = 'block';
     }
+
 </script>
+
