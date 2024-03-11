@@ -18,7 +18,7 @@ class TurmasController extends AppController
             return true;
         } else {
             if (in_array($user['categoria'], ['COORDENADOR'])) {
-                if (in_array($this->request->getParam('action'), ['view','senha','login','logout','acesso'])) {
+                if (in_array($this->request->getParam('action'), ['add','edit','index','view','senha','login','logout','acesso'])) {
                     return true;
                 }
             } else {
@@ -40,7 +40,11 @@ class TurmasController extends AppController
         $user = $this->Auth->user();
         $user['professor'] = $this->getTableLocator()->get('Professores')->find()->where(['users_id'=>$user['id']])->first();
 
-        $turmas =$this->Turmas->find()->contain(['Cursos'])->where(['Cursos.professores_id'=>$user['professor']->id])->all();
+        if($user['categoria'] == 'SUPREMO'){
+            $turmas =$this->Turmas->find()->contain(['Cursos'])->all();
+        }else{
+            $turmas =$this->Turmas->find()->contain(['Cursos'])->where(['Cursos.professores_id'=>$user['professor']->id])->all();
+        }
 
         $this->set(compact('turmas','user'));
     }

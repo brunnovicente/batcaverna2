@@ -30,7 +30,11 @@ $tipo = array(
             <?= __('Nova Solicitação de Abertura de Aula') ?>
         </h3>
         <div class="col-2 d-flex justify-content-end">
-            <?= $this->Html->link('Voltar', ['controller'=>'solicitacoes','action'=>'view'],['class'=>'btn btn-outline-dark']) ?>
+            <?php if(isset($user)):?>
+                <?= $this->Html->link('Voltar', ['controller'=>'diarios','action'=>'index'],['class'=>'btn btn-outline-dark']) ?>
+            <?php else:?>
+                <?= $this->Html->link('Voltar', ['controller'=>'solicitacoes','action'=>'view'],['class'=>'btn btn-outline-dark']) ?>
+            <?php endif;?>
         </div>
     </div>
 

@@ -3,7 +3,11 @@
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Turma> $turmas
  */
-
+    $status = array(
+        0 => 'Pendente',
+        1 => 'Aberta',
+        2 => 'Fechada',
+    );
 
 ?>
 
@@ -22,6 +26,22 @@
             </li>
         </ul>
     </nav>
+
+    <div class="bg-light p-2 ">
+        <?= $this->Form->create()?>
+        <div class="row ">
+            <div class="col-2">
+                <?php echo $this->Form->control('busca', ['options'=>$status,'class'=>'form-select my-2 ', 'label'=>'Status']);?>
+            </div>
+            <div class="col-2 pt-4">
+                <?= $this->Form->button('Filtrar', ['class'=>'btn btn-outline-secondary my-2', 'escape'=>false]) ?>
+                <?= $this->Html->link('Limpar', ['controller'=>'solicitacoes'],['class'=>'btn btn-outline-secondary my-2']) ?>
+            </div>
+        </div>
+
+
+        <?= $this->Form->end()?>
+    </div>
 
     <?php foreach ($solicitacoes as $solicitacao):?>
 
@@ -70,7 +90,7 @@
                                         <a class="btn btn-sm btn-outline-dark mx-2" href=""><i class="fab fa-speakap"></i> Suap</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="btn btn-sm btn-outline-success" href="#"><i class="fa-solid fa-lock-open"></i> Abrir</a>
+                                        <?= $this->Html->link('<i class="fa-solid fa-lock-open"></i> Abrir', ['controller'=>'solicitacoes','action'=>'abrir', $solicitacao->id],['class'=>'btn btn-sm btn-outline-success ','escape'=>false,'confirm'=>'Tem certeza que deseja ABRIR esta Solicitação?']) ?>
                                     </li>
                                     <li class="nav-item">
                                         <?= $this->Html->link( '<i class="fa-solid fa-trash-can"></i> Excluir', ['controller'=>'solicitacoes','action' => 'delete', $solicitacao->id], ['class'=>'btn btn-outline-danger btn-sm mx-2','escape'=>false,'confirm' => __('Tem certeza que deseja remover a Solicitação?', $solicitacao->id)]) ?>
@@ -80,7 +100,7 @@
                                         <a class="btn btn-sm btn-outline-dark mx-2" href=""><i class="fab fa-speakap"></i> Suap</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="btn btn-sm btn-outline-danger" href="#"><i class="fa-regular fa-circle-xmark"></i> Fechar</a>
+                                        <?= $this->Html->link('<i class="fa-regular fa-circle-xmark"></i> Fechar', ['controller'=>'solicitacoes','action'=>'fechar', $solicitacao->id],['class'=>'btn btn-sm btn-outline-danger', 'confirm'=>'Tem certeza que FINALIZAR  a Solicitação?', 'escape'=>false]) ?>
                                     </li>
                                 <?php else:?>
                                     <li class="nav-item">

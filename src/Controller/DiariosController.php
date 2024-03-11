@@ -17,7 +17,7 @@ class DiariosController extends AppController
             return true;
         } else {
             if (in_array($user['categoria'], ['COORDENADOR'])) {
-                if (in_array($this->request->getParam('action'), ['view','senha','login','logout','acesso'])) {
+                if (in_array($this->request->getParam('action'), ['add','view','senha','login','logout','acesso','index','edit'])) {
                     return true;
                 }
             } else {
@@ -38,11 +38,36 @@ class DiariosController extends AppController
     {
         $user = $this->Auth->user();
         $user['professor'] = $this->getTableLocator()->get('Professores')->find()->where(['users_id'=>$user['id']])->first();
-        $curso = $this->getTableLocator()->get('Cursos')->find()->where(['professores_id'=>$user['professor']->id])->first();
-        $diarios = $this->Diarios->find()->contain(['Turmas.Cursos','Professores'])->where(['Turmas.cursos_id'=>$curso->id])->all();
+        if($user['categoria'] == 'SUPREMO'){
+            if($this->request->is('post')){
+                $dados = $this->request->getData();
+                $diarios = $this->Diarios->find()
+                    ->contain(['Turmas.Cursos', 'Professores'])
+                    ->where(['OR' => [['Professores.nome LIKE' => '%' . $dados['nome'] . '%'], ['Diarios.descricao LIKE' => '%' . $dados['nome'] . '%']]])
+                    ->all();
+                $this->set(compact('diarios', 'user'));
+            }else{
+                $diarios = $this->Diarios->find()
+                    ->contain(['Turmas.Cursos', 'Professores'])
+                    ->all();
+                $this->set(compact('diarios', 'user'));
+            }
+        }else {
+            $curso = $this->getTableLocator()->get('Cursos')->find()->where(['professores_id' => $user['professor']->id])->first();
 
-        $this->set(compact('diarios','user'));
-    }
+            if ($this->request->is('post')) {
+                $dados = $this->request->getData();
+                $diarios = $this->Diarios->find()
+                    ->contain(['Turmas.Cursos', 'Professores'])
+                    ->where(['Turmas.cursos_id' => $curso->id, 'OR' => [['Professores.nome LIKE' => '%' . $dados['nome'] . '%'], ['Diarios.descricao LIKE' => '%' . $dados['nome'] . '%']]])
+                    ->all();
+                $this->set(compact('diarios', 'user'));
+            } else {
+                $diarios = $this->Diarios->find()->contain(['Turmas.Cursos', 'Professores'])->where(['Turmas.cursos_id' => $curso->id])->all();
+                $this->set(compact('diarios', 'user'));
+            }
+        }
+    }//Fim do Index
 
     /**
      * View method
@@ -73,6 +98,8 @@ class DiariosController extends AppController
         $diario = $this->Diarios->newEmptyEntity();
         if ($this->request->is('post')) {
             $diario = $this->Diarios->patchEntity($diario, $this->request->getData());
+            $diario->link = 'https://suap.ifma.edu.br/edu/definir_horario_aula_diario/'.$diario->codigo;
+            $diario->status = 1;
             if ($this->Diarios->save($diario)) {
                 $this->Flash->success(__('The diario has been saved.'));
 

@@ -26,7 +26,7 @@
             <th>SIAPE</th>
             <th>NOME</th>
             <th>E-MAIL</th>
-            <th>STATUS</th>
+            <th>CATEGORIA</th>
             <th></th>
         </tr>
         </thead>
@@ -38,19 +38,23 @@
                 <td><?= h($professore->email) ?></td>
 
                 <td>
-                    <?php if($professore->user->status == 1): ?>
-                        <span class="badge text-bg-success">Ativo</span>
+                    <?php if($professore->user->categoria == 'SUPREMO'): ?>
+                        <span class="badge text-bg-danger">Supremo</span>
                     <?php else:?>
-                        <span class="badge text-bg-warning">Ativo</span>
+                        <?php if($professore->user->categoria == 'COORDENADOR'):?>
+                            <span class="badge text-bg-success">Coordenador</span>
+                        <?php else:?>
+                            Professor
+                        <?php endif;?>
                     <?php endif;?>
                 </td>
 
                 <td class="actions">
                     <?php
-                        if($professore->user->status == 0){
-                            echo $this->Html->link(__('<i class="fa-solid fa-key"></i> Acesso'), ['controller'=>'users','action' => 'acesso', $professore->user->id],['class'=>'btn btn-outline-success btn-sm', 'confirm'=>'Tem certeza que deseja ativar '.$professore->nome, 'escape'=>false]);
+                        if($professore->user->categoria == 'PROFESSOR'){
+                            echo $this->Html->link(__('<i class="fa-solid fa-key"></i> Promover'), ['controller'=>'users','action' => 'coordenar', $professore->user->id],['class'=>'btn btn-outline-success btn-sm', 'confirm'=>'Tem certeza que deseja promover '.$professore->nome.' para status de COORDENADOR?', 'escape'=>false]);
                         }else{
-                            echo $this->Html->link(__(' Desativar'), ['action' => 'desativar', $professore->id],['class'=>'btn btn-outline-danger btn-sm', 'confirm'=>'Tem certeza que deseja desativar '.$professore->nome]);
+                            echo $this->Html->link(__('<i class="fa-solid fa-lock"></i> Revogar'), ['controller'=>'users','action' => 'revogar', $professore->user->id],['class'=>'btn btn-outline-danger btn-sm', 'confirm'=>'Tem certeza que deseja revogar acesso de '.$professore->nome.' como COORDENADOR?', 'escape'=>false]);
                         }
                     ?>
                 </td>

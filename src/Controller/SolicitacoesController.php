@@ -48,16 +48,26 @@ class SolicitacoesController extends AppController
     {
         $user = $this->Auth->user();
         $user['professor'] = $this->getTableLocator()->get('Professores')->find()->where(['users_id'=>$user['id']])->first();
-        $curso = $this->getTableLocator()->get('Cursos')->find()->where(['Cursos.professores_id'=>$user['professor']->id])->first();
 
-        $sol = $this->Solicitacoes->find()->contain(['Diarios.Turmas.Cursos','Diarios.Professores']);
+        if($this->request->is('post')){
+            $dados = $this->request->getData();
+            $sol = $this->Solicitacoes->find()
+                ->contain(['Diarios.Turmas.Cursos','Diarios.Professores'])
+                ->where(['Solicitacoes.status' => $dados['busca']]);
+        }else{
+            $sol = $this->Solicitacoes->find()->contain(['Diarios.Turmas.Cursos','Diarios.Professores']);
+        }
         $solicitacoes = array();
-        foreach ($sol as $sol){
-            if($sol->diario->turma->curso->id == $curso->id){
-                $solicitacoes[] = $sol;
+        if($user['categoria'] == 'SUPREMO'){
+            $solicitacoes = $sol;
+        }else {
+            $curso = $this->getTableLocator()->get('Cursos')->find()->where(['Cursos.professores_id' => $user['professor']->id])->first();
+            foreach ($sol as $sol) {
+                if ($sol->diario->turma->curso->id == $curso->id) {
+                    $solicitacoes[] = $sol;
+                }
             }
         }
-
         $this->set(compact('solicitacoes','user'));
     }
 
@@ -76,6 +86,7 @@ class SolicitacoesController extends AppController
         }
         $this->set(compact('pendentes','user'));
     }
+
 
     public function listar($id){
         $this->viewBuilder()->setLayout('home');
@@ -263,9 +274,14 @@ class SolicitacoesController extends AppController
      */
     public function add($id)
     {
-        $this->viewBuilder()->setLayout('home');
         $user = $this->Auth->user();
-        //$user['professor'] = $this->getTableLocator()->get('Professores')->find()->where(['users_id'=>$user['id']])->first();
+
+        if(!$user) {
+            $this->viewBuilder()->setLayout('home');
+        }else{
+            $user['professor'] = $this->getTableLocator()->get('Professores')->find()->where(['users_id'=>$user['id']])->first();
+        }
+
 
 
         $diario = $this->getTableLocator()->get('Diarios')->get($id,['contain'=>['Professores', 'Turmas.Cursos.Professores']]);

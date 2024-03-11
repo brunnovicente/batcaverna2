@@ -8,52 +8,54 @@ use DateTime;
 class PrincipalController extends AppController
 {
 
-    public function index(){
+    public function index()
+    {
         $user = $this->Auth->user();
-        $user['professor'] = $this->getTableLocator()->get('Professores')->find()->where(['users_id'=>$user['id']])->first();
+        $user['professor'] = $this->getTableLocator()->get('Professores')->find()->where(['users_id' => $user['id']])->first();
 
         $curso = $this->getTableLocator()->get('Cursos')
             ->find()
-            ->where(['Cursos.professores_id'=>$user['professor']->id])->first();
-
+            ->where(['Cursos.professores_id' => $user['professor']->id])->first();
 
         $solicitacoes_abertas = $this->getTableLocator()
             ->get('Solicitacoes')->find()
             ->contain(['Diarios.Turmas.Cursos'])
             ->where(['Solicitacoes.status' => 1])
             ->all();
-        $abertas = 0;
+        $abertas = count($solicitacoes_abertas);
         $fechar = 0;
-        foreach ($solicitacoes_abertas as $sol){
-            $dias = ((new DateTime())->diff(new DateTime(''.$sol->data->format('y-m-d'))))->d;
-            if($sol->diario->turma->curso->id == $curso->id){
-                $abertas++;
-                if($dias > 2){
-                    $fechar++;
+        if ($user['categoria'] == 'COORDENADOR') {
+            $abertas = 0;
+            foreach ($solicitacoes_abertas as $sol) {
+                $dias = ((new DateTime())->diff(new DateTime('' . $sol->data->format('y-m-d'))))->d;
+                if ($sol->diario->turma->curso->id == $curso->id) {
+                    $abertas++;
+                    if ($dias > 2) {
+                        $fechar++;
+                    }
                 }
             }
-
-        }
+        }//Fim do teste do coordenador
 
         $solicitacoes_pendentes = $this->getTableLocator()
             ->get('Solicitacoes')->find()
             ->contain(['Diarios.Turmas.Cursos'])
             ->where(['Solicitacoes.status' => 0])
             ->all();
-        $pendentes = 0;
+        $pendentes = count($solicitacoes_pendentes);
         $abrir = 0;
-
-        foreach ($solicitacoes_pendentes as $sol){
-            $dias = (new DateTime(''.$sol->data->format('y-m-d')))->diff(new DateTime())->d;
-            if($sol->diario->turma->curso->id == $curso->id){
-                $pendentes++;
-                if($dias < 1){
-                    $abrir ++;
+        if($user['categoria'] == 'COORDENADOR') {
+            $pendentes = 0;
+            foreach ($solicitacoes_pendentes as $sol) {
+                $dias = (new DateTime('' . $sol->data->format('y-m-d')))->diff(new DateTime())->d;
+                if ($sol->diario->turma->curso->id == $curso->id) {
+                    $pendentes++;
+                    if ($dias < 1) {
+                        $abrir++;
+                    }
                 }
-           }
+            }
         }
-
-
 
         $this->set(compact('user','abertas','pendentes','fechar','abrir'));
     }

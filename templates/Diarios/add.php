@@ -22,8 +22,6 @@
             <?php
             echo $this->Form->control('codigo', ['class'=>'form-control mb-3', 'label'=>'CÓDIGO']);
             echo $this->Form->control('descricao', ['class'=>'form-control mb-3', 'label'=>'DESCRIÇÃO']);
-            echo $this->Form->control('link', ['class'=>'form-control w-25 mb-3', 'label'=>'LINK']);
-            echo $this->Form->control('status', ['class'=>'form-control w-25 mb-3', 'label'=>'STATUS']);
             echo $this->Form->control('turmas_id', ['class'=>'form-select w-50 mb-3','label'=>'TURMA','options' => $turmas]);
             echo $this->Form->control('professores_id', ['class'=>'form-select w-75 mb-3','label'=>'PROFESSOR','options' => $professores]);
             ?>

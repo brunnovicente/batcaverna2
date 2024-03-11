@@ -17,7 +17,7 @@ class ProfessoresController extends AppController
             return true;
         } else {
             if(in_array($user['categoria'], ['COORDENADOR'])){
-                if (in_array($this->request->getParam('action'), ['index'])) {
+                if (in_array($this->request->getParam('action'), ['index','add'])) {
                     return true;
                 }
             }else{

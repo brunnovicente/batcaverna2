@@ -15,6 +15,12 @@
         </ul>
     </nav>
 
+    <div class="bg-light p-2 ">
+        <?= $this->Form->create()?>
+        <?php echo $this->Form->control('nome', ['class'=>'form-control my-2 w-25', 'label'=>'Busca por Professor ou Descrição']);?>
+        <?= $this->Form->end()?>
+    </div>
+
     <table class="table table-striped">
         <thead>
         <tr>
@@ -38,6 +44,7 @@
 
 
                 <td class="actions">
+                    <?= $this->Html->link(__('<i class="fas fa-unlock"></i> Solicitar'), ['controller'=>'solicitacoes','action' => 'add', $diario->id],['class'=>'btn btn-outline-dark btn-sm m-1', 'escape'=>false]) ?>
                     <?= $this->Html->link(__('<i class="fa-solid fa-pen-to-square"></i> Editar'), ['action' => 'edit', $diario->id], ['class'=>'btn btn-sm btn-outline-primary', 'escape'=>false]) ?>
                 </td>
             </tr>

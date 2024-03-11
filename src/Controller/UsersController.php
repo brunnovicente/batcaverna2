@@ -89,6 +89,37 @@ class UsersController extends AppController
         $this->redirect(['controller'=>'principal', 'action'=>'index']);
     }
 
+    public function revogar($id){
+        $usuario = $this->Users->get($id);
+        $usuario->status = 0;
+        $usuario->categoria = 'PROFESSOR';
+        $this->Users->save($usuario);
+        $this->Flash->success('Acesso de COORDENADOR revogado com sucesso!');
+        $this->redirect(['controller'=>'professores','action'=>'index']);
+    }
+
+    public function coordenar($id){
+        $usuario = $this->Users->get($id);
+        $usuario->status = 1;
+        $usuario->categoria = 'COORDENADOR';
+        $professor = $this->getTableLocator()->get('Professores')->find()->where(['users_id'=>$id])->first();
+
+        $senha = rand(100000, 999999);
+        $usuario->password = $senha."";
+        $this->Users->save($usuario);
+        $msg = new Mailer('default');
+        $msg->setEmailFormat('html');
+        $msg->setFrom(['brunovicente@brunovicente.tech'=>'BatCaverna'])
+            ->setTo($professor->email)
+            ->setSubject('Acesso Batcaverna')
+            ->deliver('Bem Vindo à Batcaverna<br>'.
+                'Você foi promovido à Coordenador de Curso. Sua senha temporária de acesso é <strong>'.$senha.'</strong>');
+
+        $this->Flash->success('Acesso liberado com sucesso com a senha: '.$senha);
+        $this->redirect(['controller'=>'professores','action'=>'index']);
+
+    }
+
     public function acesso($id){
         $user = $this->Users->get($id);
         $senha = rand(100000, 999999);
