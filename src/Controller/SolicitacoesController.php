@@ -370,7 +370,7 @@ class SolicitacoesController extends AppController
             ->deliver('Solicitação de Abertura de Diário Realizada.<br><br>'.
                 'Dados da Solicitação <br>'.
                 '<strong>TURMA: </strong>'.$solicitacao->diario->turma->descricao.'<br>'.
-                '<strong>DIÁRIO: </strong>'.$solicitacao->diario->turma->descricao.'<br>'.
+                '<strong>DIÁRIO: </strong>'.$solicitacao->diario->descricao.'<br>'.
                 '<strong>DIA: </strong>'.$solicitacao->dia.'<br>'.
                 '<strong>DATA: </strong>'.$solicitacao->data.'<br>'.
                 '<strong>HORÁRIOS: </strong>'.$solicitacao->horarios.'<br>'.

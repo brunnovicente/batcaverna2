@@ -16,11 +16,11 @@ $dias = array(
 $horarios = array('1','2','3','4','5','6');
 $tipo = array(
     'Substituição'=>'Substituição',
+    'Devolução' => 'Devolução',
     'Livre'=>'Livre',
-    'Permuta'=>'Permuta',
     'Contra-Turno'=>'Contra-Turno',
-    'Retroativas'=>'Retroativas',
-    'Eventos' => 'Eventos'
+    'Eventos' => 'Eventos',
+    'Sábado' => 'Sábado'
 );
 //$permuta->turmas_id = $turma->id;
 ?>
