@@ -121,6 +121,9 @@ class DiariosController extends AppController
      */
     public function edit($id = null)
     {
+        $user = $this->Auth->user();
+        $user['professor'] = $this->getTableLocator()->get('Professores')->find()->where(['users_id'=>$user['id']])->first();
+
         $diario = $this->Diarios->get($id, [
             'contain' => [],
         ]);
@@ -135,7 +138,7 @@ class DiariosController extends AppController
         }
         $turmas = $this->Diarios->Turmas->find('list', ['limit' => 200])->all();
         $professores = $this->Diarios->Professores->find('list', ['limit' => 200])->all();
-        $this->set(compact('diario', 'turmas', 'professores'));
+        $this->set(compact('diario', 'turmas', 'professores', 'user'));
     }
 
     /**

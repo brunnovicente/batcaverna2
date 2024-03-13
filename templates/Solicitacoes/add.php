@@ -94,6 +94,7 @@ $tipo = array(
 </div>
 
 <div id="carregando" style="display: none">
+    <?= $this->Html->image('acesso.gif', ['class'=>'d-block mx-auto', 'width'=>'500px']) ?>
     <h5 class="text-center">Enviando Solicitação ao Batcaverna...</h5>
 </div>
 
