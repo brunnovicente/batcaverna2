@@ -3,6 +3,7 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Permuta $permuta
  */
+
 ?>
 <div class="col-md-8 p-2 mx-auto mb-3">
     <h4><i class="fas fa-folder"></i><?= __(' Solicitação de Abertura de Diário') ?></h4>
@@ -60,7 +61,21 @@
 </div>
 
 <script>
-    function transferir(){
+    if ("geolocation" in navigator) {
+        // Se o suporte estiver disponível, solicita a localização do usuário
+        navigator.geolocation.getCurrentPosition(function(position) {
+            // Obtém a latitude e a longitude do usuário
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
 
+            // Faz algo com a localização, como exibir no console
+            console.log("Latitude: " + latitude + ", Longitude: " + longitude);
+        }, function(error) {
+            // Caso ocorra um erro ao obter a localização do usuário
+            console.error("Erro ao obter localização: " + error.message);
+        });
+    } else {
+        // Se o navegador não suportar a API de Geolocalização
+        console.error("Geolocalização não suportada pelo navegador.");
     }
 </script>

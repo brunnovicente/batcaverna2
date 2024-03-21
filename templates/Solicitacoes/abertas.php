@@ -85,6 +85,10 @@
                     <?= $solicitacao->data ?>
                 </div>
                 <div class="col">
+                    <strong>SOLICITADA: </strong>
+                    <?= $solicitacao->created ?>
+                </div>
+                <div class="col">
                     <strong>DIA: </strong>
                     <?= $solicitacao->dia ?>
                 </div>

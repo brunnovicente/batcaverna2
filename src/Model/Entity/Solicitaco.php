@@ -17,6 +17,8 @@ use Cake\ORM\Entity;
  * @property int|null $status
  * @property int|null $registro
  * @property int $diarios_id
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\FrozenTime|null $modified
  *
  * @property \App\Model\Entity\Diario $diario
  */
@@ -40,6 +42,8 @@ class Solicitaco extends Entity
         'status' => true,
         'registro' => true,
         'diarios_id' => true,
+        'created' => true,
+        'modified' => true,
         'diario' => true,
     ];
 }
