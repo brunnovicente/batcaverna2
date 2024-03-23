@@ -97,6 +97,11 @@ class SolicitacoesTable extends Table
             ->integer('diarios_id')
             ->notEmptyString('diarios_id');
 
+        $validator
+            ->scalar('solicitante')
+            ->maxLength('solicitante', 100)
+            ->allowEmptyString('solicitante');
+
         return $validator;
     }
 

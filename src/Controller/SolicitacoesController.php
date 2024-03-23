@@ -191,7 +191,12 @@ class SolicitacoesController extends AppController
         }//Fim do IF do Post
     }
 
-    public function transferir($id)
+    /**
+     * @param $id - Solicitante
+     * @param $ids - Solicitante
+     * @return \Cake\Http\Response|void|null
+     */
+    public function transferir($id, $ids=null)
     {
         $this->viewBuilder()->setLayout('home');
 
@@ -242,6 +247,7 @@ class SolicitacoesController extends AppController
 
             $solicitacao->status = 0;
             $solicitacao->registro = 0;
+            $solicitaco->solicitante = $this->getTableLocator()->get('Professores')->get($ids)->nome;
 
             if(!$existe){
                 $this->Flash->error(__('Selecione os dias!'));
@@ -329,7 +335,7 @@ class SolicitacoesController extends AppController
             $diasemana = array('Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sabado');
             $diasemana_numero = date('w', strtotime($dados['data']));
             $solicitacao->dia =  $diasemana[$diasemana_numero];
-
+            $solicitaco->solicitante = $diario->professore->nome;
             $solicitacao->status = 0;
 //            if($solicitaco->tipo == 'Permuta'){
 //                $solicitacao->retorno = 'Não';

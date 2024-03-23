@@ -38,23 +38,23 @@
 
         <div class="container-fluid border border-1 rounded rounded-2 my-3 p-2 linha shadow">
             <div class="row">
-                <div class="col-4">
+                <div class="col-sm-4">
                     <STRONG>DIÁRIO: </STRONG>
                     <h5><?= $solicitacao->diario->descricao ?></h5>
                 </div>
-                <div class="col-2">
+                <div class="col-sm-2">
                     <STRONG>TURMA: </STRONG>
                     <h5><?= $solicitacao->diario->turma->descricao ?></h5>
                 </div>
-                <div class="col-3">
+                <div class="col-sm-3">
                     <STRONG>PROFESSOR: </STRONG>
                     <h5><?= $solicitacao->diario->professore->nome ?></h5>
                 </div>
-                <div class="col-1">
+                <div class="col-sm-1">
                     <STRONG>STATUS: </STRONG>
                     <h5><?= $status ?></h5>
                 </div>
-                <div class="col-1">
+                <div class="col-sm-1">
                     <?php
                     $dias = (new DateTime(''.$solicitacao->data->format('y-m-d')))->diff((new DateTime()))->d
                     ?>
@@ -62,7 +62,7 @@
                         <h3><span class="badge bg-danger">Fechar</span></h3>
                     <?php endif;?>
                 </div>
-                <div class="col-1 d-flex justify-content-end">
+                <div class="col-sm-1 d-flex justify-content-end">
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-bars"></i>
@@ -80,22 +80,26 @@
             </div>
             <hr>
             <div class="row">
-                <div class="col">
+                <div class="col-sm-1">
                     <strong>DATA: </strong>
                     <?= $solicitacao->data ?>
                 </div>
-                <div class="col">
+                <div class="col-sm-2">
                     <strong>SOLICITADA: </strong>
                     <?= $solicitacao->created ?>
                 </div>
-                <div class="col">
+                <div class="col-sm-3">
+                    <strong>SOLICITANTE: </strong>
+                    <?= $solicitacao->solicitante ?>
+                </div>
+                <div class="col-sm-2">
                     <strong>DIA: </strong>
                     <?= $solicitacao->dia ?>
                 </div>
-                <div class="col">
+                <div class="col-sm-2">
                     <strong>HORÁRIO: </strong> <?= $solicitacao->horarios ?>
                 </div>
-                <div class="col">
+                <div class="col-sm-2">
                     <strong>TIPO: </strong> <?= $solicitacao->tipo ?>
                 </div>
             </div>

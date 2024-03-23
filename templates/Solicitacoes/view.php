@@ -51,7 +51,7 @@
                     <td><?= $diario->turma->ano ?></td>
                     <td>
                         <?= $this->Html->link(__('<i class="fas fa-unlock"></i> Solicitar'), ['controller'=>'solicitacoes','action' => 'add', $diario->id],['class'=>'btn btn-outline-dark btn-sm m-1', 'escape'=>false]) ?>
-                        <?= $this->Html->link(__('<i class="fa-solid fa-right-left"></i> Transferir'), ['controller'=>'solicitacoes','action' => 'transferir', $diario->turma->id],['class'=>'btn btn-outline-dark btn-sm m-1', 'escape'=>false]) ?>
+                        <?= $this->Html->link(__('<i class="fa-solid fa-right-left"></i> Transferir'), ['controller'=>'solicitacoes','action' => 'transferir', $diario->turma->id, $diario->professore->id],['class'=>'btn btn-outline-dark btn-sm m-1', 'escape'=>false]) ?>
                     </td>
                 </tr>
             <?php endforeach;?>

@@ -60,24 +60,21 @@
 
     <div class="container-fluid border border-1 rounded rounded-2 my-3 p-2 linha shadow">
         <div class="row p-0">
-            <div class="col-3">
-                <h5><strong>DIÁRIO: </strong> <?= $solicitacao->diario->descricao ?></h5>
+            <div class="col-sm-4">
+                <STRONG>DIÁRIO: </STRONG>
+                <h5><?= $solicitacao->diario->descricao ?></h5>
             </div>
-
-            <div class="col-2">
-                <h5><strong>DATA: </strong> <?= $solicitacao->data ?></h5>
+            <div class="col-sm-2">
+                <STRONG>TURMA: </STRONG>
+                <h5><?= $solicitacao->diario->turma->descricao ?></h5>
             </div>
-
-            <div class="col-1">
-                <h5><strong>DIA: </strong> <?= $solicitacao->dia ?></h5>
+            <div class="col-sm-3">
+                <STRONG>PROFESSOR: </STRONG>
+                <h5><?= $solicitacao->diario->professore->nome ?></h5>
             </div>
-
-            <div class="col-2">
-                <h5><strong>HORÁRIO: </strong> <?= $solicitacao->horarios ?></h5>
-            </div>
-
-            <div class="col-2">
-                <h5><strong>STATUS: </strong> <?= $status ?></h5>
+            <div class="col-sm-1">
+                <STRONG>STATUS: </STRONG>
+                <h5><?= $status ?></h5>
             </div>
             <div class="col-2">
                 <nav class="navbar navbar-expand-lg">
@@ -114,34 +111,34 @@
             </div>
         </div>
         <div class="border-bottom my-1"></div>
-        <div class="row p-2">
-            <div class="col">
-                <strong>JUSTIFICATIVA</strong>
-                <p>
-                    <?= $solicitacao->justificativa ?>
-                </p>
+        <div class="row">
+            <div class="col-sm-1">
+                <strong>DATA: </strong>
+                <?= $solicitacao->data ?>
             </div>
-            <div class="col">
-                <strong>PROFESSOR</strong>
-                <p>
-                    <?= $solicitacao->diario->professore->nome ?>
-                </p>
+            <div class="col-sm-2">
+                <strong>SOLICITADA: </strong>
+                <?= $solicitacao->created ?>
             </div>
-
-            <div class="col">
-                <strong>CURSO</strong>
-                <p>
-                    <?= $solicitacao->diario->turma->curso->descricao ?>
-                </p>
+            <div class="col-sm-3">
+                <strong>SOLICITANTE: </strong>
+                <?= $solicitacao->solicitante ?>
             </div>
-
-            <div class="col">
-                <strong>TIPO</strong>
-                <p>
-                    <?= $solicitacao->tipo ?>
-                </p>
+            <div class="col-sm-2">
+                <strong>DIA: </strong>
+                <?= $solicitacao->dia ?>
             </div>
-
+            <div class="col-sm-2">
+                <strong>HORÁRIO: </strong> <?= $solicitacao->horarios ?>
+            </div>
+            <div class="col-sm-2">
+                <strong>TIPO: </strong> <?= $solicitacao->tipo ?>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <strong>JUSTIFICATIVA: </strong> <?= $solicitacao->justificativa ?>
+            </div>
         </div>
     </div>
     <?php endforeach;?>
