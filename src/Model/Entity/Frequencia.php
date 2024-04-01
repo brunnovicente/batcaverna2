@@ -6,21 +6,19 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Monitoria Entity
+ * Frequencia Entity
  *
  * @property int $id
- * @property string|null $descricao
- * @property string|null $periodo
+ * @property string $dia
+ * @property string $horas
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  * @property int|null $status
- * @property \Cake\I18n\FrozenTime|null $created
- * @property \Cake\I18n\FrozenTime|null $modified
- * @property int|null $alunos_id
- * @property int|null $professores_id
+ * @property int|null $semanas_id
  *
- * @property \App\Model\Entity\Aluno $aluno
- * @property \App\Model\Entity\Professore $professore
+ * @property \App\Model\Entity\Monitoria $monitoria
  */
-class Monitoria extends Entity
+class Frequencia extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -32,14 +30,12 @@ class Monitoria extends Entity
      * @var array<string, bool>
      */
     protected $_accessible = [
-        'descricao' => true,
-        'periodo' => true,
-        'status' => true,
+        'dia' => true,
+        'horas' => true,
         'created' => true,
         'modified' => true,
-        'alunos_id' => true,
-        'professores_id' => true,
-        'aluno' => true,
-        'professore' => true,
+        'status' => true,
+        'semanas_id' => true,
+        'semana' => true,
     ];
 }

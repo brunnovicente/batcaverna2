@@ -6,6 +6,9 @@ use Cake\I18n\FrozenTime;
 <nav class="navbar navbar-light bg-light">
     <h4>Bem Vindo à Batcaverna</h4>
     <ul class="nav justify-content-end">
+        <?php if($user['categoria'] == 'MONITOR'):  ?>
+            <?= $this->Html->link(__('<i class="fa-solid fa-person-shelter"></i> Monitorias'), ['controller'=>'monitorias','action' => 'index'], ['class' => 'btn btn-outline-dark btn-sm m-1', 'escape'=>false]) ?>
+        <?php else:?>
         <li class="nav-item">
             <?= $this->Html->link(__('<i class="fas fa-folder"></i> Solicitações'), ['controller'=>'solicitacoes','action' => 'index'], ['class' => 'btn btn-outline-dark btn-sm m-1', 'escape'=>false]) ?>
             <?= $this->Html->link(__('<i class="fa-solid fa-person-shelter"></i> Monitorias'), ['controller'=>'monitorias','action' => 'index'], ['class' => 'btn btn-outline-dark btn-sm m-1', 'escape'=>false]) ?>
@@ -15,6 +18,7 @@ use Cake\I18n\FrozenTime;
             <?= $this->Html->link(__('<i class="fas fa-layer-group"></i> Turmas'), ['controller'=>'turmas','action' => 'index'], ['class' => 'btn btn-outline-dark btn-sm m-1', 'escape'=>false]) ?>
             <?= $this->Html->link(__('<i class="fas fa-graduation-cap"></i> Cursos'), ['controller'=>'cursos','action' => 'index'], ['class' => 'btn btn-outline-dark btn-sm m-1', 'escape'=>false]) ?>
         </li>
+        <?php endif;?>
     </ul>
 </nav>
 
@@ -22,14 +26,24 @@ use Cake\I18n\FrozenTime;
     <div class="col-sm-3">
         <div class="border border-1 rounded-2 bg-light p-2">
             <img src="<?= $user['foto'] ?>" class="w-50 mx-auto rounded-circle d-flex align-content-center">
-            <h4 class="text-center mt-3"><?= $user['professor']->nome ?></h4>
-            <h5 class="text-center mt-2">SIAPE: <?= $user['professor']->siape ?></h5>
-            <h5 class="text-center mt-2">E-MAIL: <?= $user['professor']->email ?></h5>
-            <h5 class="text-center mt-2">CATEGORIA: <?= $user['categoria'] ?></h5>
+
+            <?php if($user['categoria'] == 'MONITOR'):  ?>
+                <h4 class="text-center mt-3"><?= $user['aluno']->nome ?></h4>
+                <h5 class="text-center mt-2">MATRÍCULA: <?= $user['aluno']->matricula ?></h5>
+                <h5 class="text-center mt-2">E-MAIL: <?= $user['aluno']->email ?></h5>
+                <h5 class="text-center mt-2">CATEGORIA: <?= $user['categoria'] ?></h5>
+            <?php else:?>
+                <h4 class="text-center mt-3"><?= $user['professor']->nome ?></h4>
+                <h5 class="text-center mt-2">SIAPE: <?= $user['professor']->siape ?></h5>
+                <h5 class="text-center mt-2">E-MAIL: <?= $user['professor']->email ?></h5>
+                <h5 class="text-center mt-2">CATEGORIA: <?= $user['categoria'] ?></h5>
+            <?php endif;?>
         </div>
 
     </div>
 
+
+    <?php if($user['categoria'] != 'MONITOR'):  ?>
     <div class="col-sm-6">
         <div class="bg-light p-3 border border-1 rounded-3">
             <h5>Solicitações Realizadas</h5>
@@ -84,5 +98,5 @@ use Cake\I18n\FrozenTime;
         </div>
 
     </div>
-
+    <?php endif;?>
 </div>

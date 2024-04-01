@@ -26,12 +26,6 @@
 
         <div class="row">
             <div class="col-sm-3">
-                <?= $this->Form->control('carga', ['label'=>'CARGA HORÁRIA','class'=>'form-control mb-3'])?>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-3">
                 <?= $this->Form->control('periodo', ['label'=>'QUAL SEMESTRE LETIVO?','class'=>'form-control mb-3'])?>
             </div>
         </div>

@@ -15,7 +15,12 @@
  */
 
 $cakeDescription = 'BatCaverna';
-$nome = explode(" ", $user['professor']->nome)[0];
+if(isset($user['professor'])){
+    $nome = explode(" ", $user['professor']->nome)[0];
+}else{
+    $nome = explode(" ", $user['aluno']->nome)[0];
+}
+
 ?>
 <!DOCTYPE html>
 <html>

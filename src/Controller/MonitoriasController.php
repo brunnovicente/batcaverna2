@@ -18,11 +18,11 @@ class MonitoriasController extends AppController
             return true;
         } else {
             if (in_array($user['categoria'], ['COORDENADOR'])) {
-                if (in_array($this->request->getParam('action'), ['index'])) {
+                if (in_array($this->request->getParam('action'), ['index','add','edit'])) {
                     return true;
                 }
             } else {
-                if (in_array($this->request->getParam('action'), [])){
+                if (in_array($this->request->getParam('action'), ['index'])){
                     return true;
                 }
             }
@@ -37,10 +37,22 @@ class MonitoriasController extends AppController
     public function index()
     {
         $user = $this->Auth->user();
-        $user['professor'] = $this->getTableLocator()->get('Professores')->find()->where(['users_id'=>$user['id']])->first();
+        if($user['categoria'] == 'MONITOR'){
+            $user['aluno'] = $this->getTableLocator()->get('Alunos')->find()->where(['users_id'=>$user['id']])->first();
+        }else{
+            $user['professor'] = $this->getTableLocator()->get('Professores')->find()->where(['users_id'=>$user['id']])->first();
+        }
 
-        $monitorias = $this->Monitorias->find()->contain(['Professores','Alunos']);
 
+        if($user['categoria'] == 'SUPREMO'){
+            $monitorias = $this->Monitorias->find()->contain(['Professores','Alunos']);
+        }else if($user['categoria'] == 'COORDENADOR'){
+            $monitorias = $this->Monitorias->find()
+                ->contain(['Professores','Alunos'])->where(['Monitorias.professores_id'=>$user['professor']->id]);
+        }else{
+            $monitorias = $this->Monitorias->find()
+                ->contain(['Professores','Alunos'])->where(['Monitorias.alunos_id'=>$user['aluno']->id]);
+        }
         $this->set(compact('monitorias','user'));
     }
 
@@ -83,7 +95,11 @@ class MonitoriasController extends AppController
             }
             $this->Flash->error(__('The monitoria could not be saved. Please, try again.'));
         }
-        $alunos = $this->Monitorias->Alunos->find('list')->order(['nome'])->all();
+        $alunos = $this->Monitorias->Alunos
+            ->find('list')
+            ->contain(['Users','Cursos'])
+            ->where(['Users.categoria'=>'MONITOR'])
+            ->order(['nome'])->all();
         $professores = $this->Monitorias->Professores->find('list')->all();
         $this->set(compact('monitoria', 'alunos', 'professores', 'user'));
     }
@@ -136,4 +152,14 @@ class MonitoriasController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
-}
+
+    public function finalizar($id=null)
+    {
+        $monitoria = $this->Monitorias->get($id);
+        $monitoria->status = 0;
+        $this->Monitorias->save($monitoria);
+        $this->Flash->success('Monitoria finalizada com sucesso!');
+        $this->redirect(['action'=>'index']);
+    }
+
+}//Fim da Classe

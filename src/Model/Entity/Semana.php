@@ -6,21 +6,21 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Monitoria Entity
+ * Semana Entity
  *
  * @property int $id
- * @property string|null $descricao
- * @property string|null $periodo
- * @property int|null $status
- * @property \Cake\I18n\FrozenTime|null $created
- * @property \Cake\I18n\FrozenTime|null $modified
- * @property int|null $alunos_id
- * @property int|null $professores_id
+ * @property string $descricao
+ * @property string $carga
+ * @property \Cake\I18n\FrozenDate $inicio
+ * @property \Cake\I18n\FrozenDate $fim
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
+ * @property int $monitorias_id
+ * @property string|null $cumprido
  *
- * @property \App\Model\Entity\Aluno $aluno
- * @property \App\Model\Entity\Professore $professore
+ * @property \App\Model\Entity\Monitoria $monitoria
  */
-class Monitoria extends Entity
+class Semana extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -33,13 +33,13 @@ class Monitoria extends Entity
      */
     protected $_accessible = [
         'descricao' => true,
-        'periodo' => true,
-        'status' => true,
+        'carga' => true,
+        'inicio' => true,
+        'fim' => true,
         'created' => true,
         'modified' => true,
-        'alunos_id' => true,
-        'professores_id' => true,
-        'aluno' => true,
-        'professore' => true,
+        'monitorias_id' => true,
+        'cumprido' => true,
+        'monitoria' => true,
     ];
 }

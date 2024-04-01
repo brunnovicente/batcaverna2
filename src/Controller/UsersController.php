@@ -27,7 +27,7 @@ class UsersController extends AppController
             return true;
         } else {
             if (in_array($user['categoria'], ['COORDENADOR'])) {
-                if (in_array($this->request->getParam('action'), ['alterarsenha','view','senha','login','logout','acesso'])) {
+                if (in_array($this->request->getParam('action'), ['alterarsenha','view','senha','login','logout','acesso','promoveraluno','revogaraluno'])) {
                     return true;
                 }
             } else {

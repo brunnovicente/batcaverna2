@@ -200,8 +200,6 @@ class SolicitacoesController extends AppController
     {
         $this->viewBuilder()->setLayout('home');
 
-
-
         $solicitacao = $this->Solicitacoes->newEmptyEntity();
 
         if($this->request->is('post')){

@@ -70,10 +70,6 @@ class MonitoriasTable extends Table
             ->allowEmptyString('descricao');
 
         $validator
-            ->decimal('carga')
-            ->allowEmptyString('carga');
-
-        $validator
             ->scalar('periodo')
             ->maxLength('periodo', 50)
             ->allowEmptyString('periodo');
