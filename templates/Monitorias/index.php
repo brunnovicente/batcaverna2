@@ -49,6 +49,7 @@
                             <?= $this->Html->link('<i class="fa-solid fa-pen-to-square"></i> Editar', ['action'=>'edit', $monitoria->id],['class'=>'btn btn-sm btn-outline-primary', 'escape'=>false]) ?>
                             <?= $this->Html->link('<i class="fa-regular fa-rectangle-xmark"></i> Finalizar', ['action'=>'finalizar', $monitoria->id],['class'=>'btn btn-sm btn-outline-danger','confirm'=>'Tem certeza que deseja encerrar a monitoria?' ,'escape'=>false]) ?>
                         <?php endif;?>
+
                         <?= $this->Html->link('<i class="fa-solid fa-calendar-week"></i> Semanas',['controller'=>'semanas','action'=>'index', $monitoria->id],['class'=>'btn btn-sm btn-outline-secondary','escape'=>false]) ?>
                     <?php endif;?>
                     <?= $this->Html->link('<i class="fa-regular fa-calendar-days"></i> Frequencias',['controller'=>'frequencias','action'=>'index', $monitoria->id],['class'=>'btn btn-sm btn-outline-warning','escape'=>false]) ?>

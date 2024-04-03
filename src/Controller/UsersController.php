@@ -31,7 +31,7 @@ class UsersController extends AppController
                     return true;
                 }
             } else {
-                if (in_array($this->request->getParam('action'), ['login','logout'])){
+                if (in_array($this->request->getParam('action'), ['login','alterarsenha','logout'])){
                     return true;
                 }
             }

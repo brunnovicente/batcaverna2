@@ -14,9 +14,10 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  * @property int|null $status
+ * @property \Cake\I18n\FrozenTime|null $saida
  * @property int|null $semanas_id
  *
- * @property \App\Model\Entity\Monitoria $monitoria
+ * @property \App\Model\Entity\Semana $semana
  */
 class Frequencia extends Entity
 {
@@ -35,6 +36,7 @@ class Frequencia extends Entity
         'created' => true,
         'modified' => true,
         'status' => true,
+        'saida' => true,
         'semanas_id' => true,
         'semana' => true,
     ];

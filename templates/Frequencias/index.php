@@ -9,7 +9,11 @@
         <h4><i class="fa-solid fa-layer-group"></i><?= __(' Frequencias') ?></h4>
         <ul class="nav justify-content-end">
             <li class="nav-item">
-                <?= $this->Html->link(__('<i class="fa-solid fa-door-open"></i> Entrada'), ['action' => 'add', $monitoria->id], ['class' => 'btn btn-sm btn-outline-success', 'escape'=>false]) ?>
+                <?php if($user['categoria'] == 'COORDENADOR'):?>
+                    <?= $this->Html->link(__('<i class="fa-solid fa-door-open"></i> Registrar'), ['action' => 'add', $monitoria->id], ['class' => 'btn btn-sm btn-outline-success', 'escape'=>false]) ?>
+                <?php else:?>
+                    <?= $this->Html->link(__('<i class="fa-solid fa-door-open"></i> Entrada'), ['action' => 'entrada', $monitoria->id], ['class' => 'btn btn-sm btn-outline-success', 'escape'=>false]) ?>
+                <?php endif;?>
                 <?= $this->Html->link(__('<i class="fa-solid fa-chevron-left"></i> Voltar'), ['controller'=>'monitorias', 'action' => 'index'], ['class' => 'ms-2 btn btn-sm btn-outline-secondary float-end', 'escape'=>false]) ?>
             </li>
         </ul>
@@ -44,7 +48,7 @@
                 <td>
                     <?php
                         if($frequencia->status == 1){
-                            echo $frequencia->modified;
+                            echo $frequencia->saida;
                         }
                    ?></td>
                 <td>
@@ -56,7 +60,10 @@
                 </td>
                 <td>
                     <?php if($frequencia->status == 0):?>
-                        <?= $this->Html->link('<i class="fa-solid fa-outdent"></i> Saída', ['action' => 'edit', $frequencia->id],['class'=>'btn btn-sm btn-outline-success', 'escape'=>false]) ?>
+                        <?= $this->Html->link('<i class="fa-solid fa-outdent"></i> Saída', ['action' => 'saida', $frequencia->id],['class'=>'btn btn-sm btn-outline-success', 'escape'=>false]) ?>
+                    <?php endif;?>
+                    <?php if($user['categoria']=='COORDENADOR'):?>
+                        <?= $this->Html->link('<i class="fa-solid fa-pen-to-square"></i> Editar', ['action' => 'edit', $frequencia->id],['class'=>'btn btn-sm btn-outline-primary', 'escape'=>false]) ?>
                     <?php endif;?>
                 </td>
             </tr>

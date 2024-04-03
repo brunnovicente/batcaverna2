@@ -22,9 +22,10 @@ class FrequenciasFixture extends TestFixture
                 'id' => 1,
                 'dia' => 'Lorem ipsum dolor sit amet',
                 'horas' => 1.5,
-                'created' => '2024-03-30 10:02:39',
-                'modified' => '2024-03-30 10:02:39',
+                'created' => '2024-04-02 20:31:14',
+                'modified' => '2024-04-02 20:31:14',
                 'status' => 1,
+                'saida' => '2024-04-02 20:31:14',
                 'semanas_id' => 1,
             ],
         ];

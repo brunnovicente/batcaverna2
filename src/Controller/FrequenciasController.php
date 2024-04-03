@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\Chronos\Date;
-
 /**
  * Frequencias Controller
  *
@@ -13,18 +11,17 @@ use Cake\Chronos\Date;
  */
 class FrequenciasController extends AppController
 {
-
     public function isAuthorized($user)
     {
         if ($user['categoria'] == 'SUPREMO') {
             return true;
         } else {
             if (in_array($user['categoria'], ['COORDENADOR'])) {
-                if (in_array($this->request->getParam('action'), ['index','add','edit'])) {
+                if (in_array($this->request->getParam('action'), ['index','add','edit','entrada','saida'])) {
                     return true;
                 }
             } else {
-                if (in_array($this->request->getParam('action'), ['index','add','edit'])){
+                if (in_array($this->request->getParam('action'), ['index','saida','entrada'])){
                     return true;
                 }
             }
@@ -50,13 +47,23 @@ class FrequenciasController extends AppController
         $this->set(compact('user','frequencias','monitoria'));
     }
 
-
     /**
-     * Add method
+     * View method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @param string|null $id Frequencia id.
+     * @return \Cake\Http\Response|null|void Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function add($id=null)
+    public function view($id = null)
+    {
+        $frequencia = $this->Frequencias->get($id, [
+            'contain' => ['Semanas'],
+        ]);
+
+        $this->set(compact('frequencia'));
+    }
+
+    public function entrada($id=null)
     {
         $user = $this->Auth->user();
         $user['aluno'] = $this->getTableLocator()->get('Alunos')->find()->where(['users_id' => $user['id']])->first();
@@ -65,6 +72,7 @@ class FrequenciasController extends AppController
         $diasemana = array('Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sabado');
         $dia = date("w");
         $hoje = date('Y-m-d');
+
         $semana = $this->getTableLocator()->get('Semanas')->find()
             ->contain(['Monitorias'])
             ->where([
@@ -98,7 +106,7 @@ class FrequenciasController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function saida($id = null)
     {
         $frequencia = $this->Frequencias->get($id, [
             'contain' => ['Semanas.Monitorias'],
@@ -109,6 +117,7 @@ class FrequenciasController extends AppController
         $data = new \DateTime();
         $diferenca = $frequencia->created->diff($data);
         $frequencia->horas = $diferenca->format('%h') + $diferenca->format('%i')/60;
+        $frequencia->saida = $data;
 
         $frequencia->semana->cumprido += $frequencia->horas;
         $this->Frequencias->save($frequencia);
@@ -118,4 +127,122 @@ class FrequenciasController extends AppController
         $this->redirect(['controller'=>'frequencias','action'=>'index', $frequencia->semana->monitoria->id]);
     }
 
-}//Fim do Controller
+    /**
+     * Add method
+     *
+     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     */
+    public function add($id=null)
+    {
+        $user = $this->Auth->user();
+        $user['professor'] = $this->getTableLocator()->get('Professores')->find()->where(['users_id' => $user['id']])->first();
+
+        $monitoria = $this->getTableLocator()->get('Monitorias')->get($id, ['contain'=>['Alunos','Professores']]);
+        $frequencia = $this->Frequencias->newEmptyEntity();
+        $diasemana = array('Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sabado');
+
+        //$hoje = date('Y-m-d');
+
+
+        if ($this->request->is('post')) {
+            $frequencia = $this->Frequencias->patchEntity($frequencia, $this->request->getData());
+
+            $semana = $this->getTableLocator()->get('Semanas')->find()
+                ->contain(['Monitorias'])
+                ->where([
+                    'Semanas.inicio <=' => $frequencia->created,
+                    'Semanas.fim >=' => $frequencia->created,
+                    'Monitorias.id' => $id,
+                ])->first();
+
+            $frequencia->dia = $diasemana[$frequencia->created->format('w')];
+            $frequencia->semana = $semana;
+            $frequencia->status = 1;
+            $diferenca = $frequencia->created->diff($frequencia->saida);
+            $frequencia->horas = $diferenca->format('%h') + $diferenca->format('%i')/60;
+
+            $semana->cumprido += $frequencia->horas;
+            //var_dump($frequencia->getErrors());
+            //exit();
+            if ($this->Frequencias->save($frequencia)) {
+                //$this->getTableLocator()->get('Semanas')->save($semana);
+                $this->Flash->success(__('Frequencia registrada com sucesso.'));
+
+                $this->redirect(['controller'=>'frequencias','action'=>'index', $monitoria->id]);
+            }else{
+                $this->Flash->error(__('The frequencia could not be saved. Please, try again.'));
+            }
+
+        }
+        $semanas = $this->Frequencias->Semanas->find('list', ['limit' => 200])->all();
+        $this->set(compact('frequencia', 'semanas', 'user','monitoria'));
+    }
+
+    /**
+     * Edit method
+     *
+     * @param string|null $id Frequencia id.
+     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function edit($id = null)
+    {
+        $user = $this->Auth->user();
+        $user['professor'] = $this->getTableLocator()->get('Professores')->find()->where(['users_id' => $user['id']])->first();
+
+        $frequencia = $this->Frequencias->get($id, [
+            'contain' => ['Semanas.Monitorias.Alunos','Semanas.Monitorias.Professores'],
+        ]);
+        if($frequencia->status == 0){
+            $this->Flash->error(__('A frequência está em aberto!'));
+            return $this->redirect(['action' => 'index', $frequencia->semana->monitoria->id]);
+        }
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $frequencia = $this->Frequencias->patchEntity($frequencia, $this->request->getData());
+            $diferenca = $frequencia->created->diff($frequencia->saida);
+            $frequencia->horas = $diferenca->format('%h') + $diferenca->format('%i')/60;
+
+            if ($this->Frequencias->save($frequencia)) {
+                $this->calcular_cumpridas($frequencia->semana->id);
+                $this->Flash->success(__('Frequência alterada com sucesso!'));
+                return $this->redirect(['action' => 'index', $frequencia->semana->monitoria->id]);
+            }
+            $this->Flash->error(__('The frequencia could not be saved. Please, try again.'));
+        }
+        $semanas = $this->Frequencias->Semanas->find('list', ['limit' => 200])->all();
+        $this->set(compact('frequencia', 'semanas','user'));
+    }
+
+    /**
+     * Delete method
+     *
+     * @param string|null $id Frequencia id.
+     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function delete($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        $frequencia = $this->Frequencias->get($id);
+        if ($this->Frequencias->delete($frequencia)) {
+            $this->Flash->success(__('The frequencia has been deleted.'));
+        } else {
+            $this->Flash->error(__('The frequencia could not be deleted. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'index']);
+    }
+
+    private function calcular_cumpridas($id)
+    {
+        $semana = $this->getTableLocator()->get('Semanas')->get($id);
+        $frequencias = $this->Frequencias->find()->where(['semanas_id'=>$semana->id])->all();
+        $horas = 0;
+        foreach ($frequencias as $frequencia){
+            $horas += $frequencia->horas;
+        }
+        $semana->cumprido = $horas;
+        $this->getTableLocator()->get('Semanas')->save($semana);
+    }
+
+}

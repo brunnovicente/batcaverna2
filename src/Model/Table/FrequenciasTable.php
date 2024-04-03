@@ -11,6 +11,8 @@ use Cake\Validation\Validator;
 /**
  * Frequencias Model
  *
+ * @property \App\Model\Table\SemanasTable&\Cake\ORM\Association\BelongsTo $Semanas
+ *
  * @method \App\Model\Entity\Frequencia newEmptyEntity()
  * @method \App\Model\Entity\Frequencia newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Frequencia[] newEntities(array $data, array $options = [])
@@ -72,6 +74,10 @@ class FrequenciasTable extends Table
         $validator
             ->integer('status')
             ->allowEmptyString('status');
+
+        $validator
+            ->dateTime('saida')
+            ->allowEmptyDateTime('saida');
 
         $validator
             ->integer('semanas_id')

@@ -25,7 +25,7 @@ class FrequenciasTableTest extends TestCase
      */
     protected $fixtures = [
         'app.Frequencias',
-        'app.Monitorias',
+        'app.Semanas',
     ];
 
     /**
