@@ -64,6 +64,7 @@
                     <?php endif;?>
                     <?php if($user['categoria']=='COORDENADOR'):?>
                         <?= $this->Html->link('<i class="fa-solid fa-pen-to-square"></i> Editar', ['action' => 'edit', $frequencia->id],['class'=>'btn btn-sm btn-outline-primary', 'escape'=>false]) ?>
+                        <?= $this->Html->link('<i class="fa-solid fa-trash-can"></i>Excluir', ['action' => 'delete', $frequencia->id],['class'=>'btn btn-sm btn-outline-danger','confirm'=>'Tem certeza que deseja excluir permanentemente esse registro de frequência?', 'escape'=>false]) ?>
                     <?php endif;?>
                 </td>
             </tr>

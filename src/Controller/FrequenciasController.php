@@ -17,7 +17,7 @@ class FrequenciasController extends AppController
             return true;
         } else {
             if (in_array($user['categoria'], ['COORDENADOR'])) {
-                if (in_array($this->request->getParam('action'), ['index','add','edit','entrada','saida'])) {
+                if (in_array($this->request->getParam('action'), ['delete','index','add','edit','entrada','saida'])) {
                     return true;
                 }
             } else {
@@ -222,15 +222,16 @@ class FrequenciasController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $frequencia = $this->Frequencias->get($id);
+        //$this->request->allowMethod(['post', 'delete']);
+        $frequencia = $this->Frequencias->get($id, ['contain'=>'Semanas']);
         if ($this->Frequencias->delete($frequencia)) {
-            $this->Flash->success(__('The frequencia has been deleted.'));
+            $this->calcular_cumpridas($frequencia->semana->id);
+            $this->Flash->success(__('Frequencia excluída com sucesso!'));
         } else {
             $this->Flash->error(__('The frequencia could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'index', $frequencia->semana->id]);
     }
 
     private function calcular_cumpridas($id)
