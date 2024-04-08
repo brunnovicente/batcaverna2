@@ -41,14 +41,13 @@
             <tr>
                 <td><?= $this->Number->format($semana->id) ?></td>
                 <td><?= h($semana->descricao) ?></td>
-                <td><?= $this->Number->format($semana->carga) ?></td>
-                <td><?= $this->Number->format($semana->cumprido) ?></td>
+                <td><?= number_format($semana->carga, 2) ?> horas</td>
+                <td><?= number_format($semana->cumprido,2) ?> horas</td>
                 <td><?= h($semana->inicio) ?></td>
                 <td><?= h($semana->fim) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $semana->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $semana->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $semana->id], ['confirm' => __('Are you sure you want to delete # {0}?', $semana->id)]) ?>
+                    <?= $this->Html->link(__('<i class="fa-solid fa-pen-to-square"></i> Editar'), ['action' => 'edit', $semana->id], ['class'=>'btn btn-sm btn-outline-primary', 'escape'=>false]) ?>
+                    <?= $this->Form->postLink(__('<i class="fa-solid fa-trash-can"></i> Excluir'), ['action' => 'delete', $semana->id],['class'=>'btn btn-sm btn-outline-danger', 'escape'=>false], ['confirm' => __('Are you sure you want to delete # {0}?', $semana->id)]) ?>
                 </td>
             </tr>
         <?php endforeach; ?>

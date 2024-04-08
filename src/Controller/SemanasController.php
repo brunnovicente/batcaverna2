@@ -18,7 +18,7 @@ class SemanasController extends AppController
             return true;
         } else {
             if (in_array($user['categoria'], ['COORDENADOR'])) {
-                if (in_array($this->request->getParam('action'), ['index','add'])) {
+                if (in_array($this->request->getParam('action'), ['index','add','edit'])) {
                     return true;
                 }
             } else {
@@ -44,7 +44,9 @@ class SemanasController extends AppController
 
         $semanas = $this->Semanas->find()
             ->where(['Semanas.monitorias_id'=>$monitoria->id])
-            ->contain(['Monitorias'])->all();
+            ->contain(['Monitorias'])
+            ->order('inicio')
+            ->all();
 
         $this->set(compact('semanas','user','monitoria'));
     }
@@ -108,16 +110,16 @@ class SemanasController extends AppController
         $user['professor'] = $this->getTableLocator()->get('Professores')->find()->where(['users_id'=>$user['id']])->first();
 
         $semana = $this->Semanas->get($id, [
-            'contain' => [],
+            'contain' => ['Monitorias'],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $semana = $this->Semanas->patchEntity($semana, $this->request->getData());
             if ($this->Semanas->save($semana)) {
-                $this->Flash->success(__('The semana has been saved.'));
+                $this->Flash->success(__('Semana alterada com sucesso!.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'index', $semana->monitoria->id]);
             }
-            $this->Flash->error(__('The semana could not be saved. Please, try again.'));
+            $this->Flash->error('Erro ao editar a semana');
         }
         $monitorias = $this->Semanas->Monitorias->find('list', ['limit' => 200])->all();
         $this->set(compact('semana', 'monitorias','user'));

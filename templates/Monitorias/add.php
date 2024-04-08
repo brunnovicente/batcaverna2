@@ -36,6 +36,15 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-3">
+                <?= $this->Form->control('inicio', ['label'=>'INÍCIO', 'class'=>'form-control', 'type'=>'date']) ?>
+            </div>
+            <div class="col-3">
+                <?= $this->Form->control('fim', ['label'=>'FIM', 'class'=>'form-control', 'type'=>'date']) ?>
+            </div>
+        </div>
+
         <?= $this->Form->button(__('Salvar'), ['class'=>'btn btn-success mt-3']) ?>
         <?= $this->Form->end() ?>
     </div>

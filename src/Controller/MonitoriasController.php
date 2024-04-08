@@ -89,8 +89,10 @@ class MonitoriasController extends AppController
             $monitoria->professore = $user['professor'];
 
             if ($this->Monitorias->save($monitoria)) {
-                $this->Flash->success(__('Monitoria criada com sucesso!'));
-
+                $inicio = new \DateTime($this->request->getData()['inicio']);
+                $fim = new \DateTime($this->request->getData()['fim']);
+                $this->criarSemanas($inicio, $fim, $monitoria);
+                 $this->Flash->success(__('Monitoria criada com sucesso!'));
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The monitoria could not be saved. Please, try again.'));
@@ -102,6 +104,39 @@ class MonitoriasController extends AppController
             ->order(['nome'])->all();
         $professores = $this->Monitorias->Professores->find('list')->all();
         $this->set(compact('monitoria', 'alunos', 'professores', 'user'));
+    }
+
+    private function criarSemanas($inicio, $fim, $monitoria){
+        $id = 1;
+        $comeco = new \DateTime($inicio->format('Y-m-d'));
+        $final = new \DateTime($inicio->format('Y-m-d'));
+        while(true){
+            $dia = $final->format('w');
+            while($dia < 5){
+                $final->modify('+1 day');
+                if($final->format('d/m/Y') == $fim->format('d/m/Y')){
+                    break;
+                    $final = new \DateTime($fim->format('Y-d-m'));
+                }
+                $dia++;
+            }
+
+            $semana = $this->getTableLocator()->get('Semanas')->newEmptyEntity();
+            $semana->descricao = 'Semana '.$id;
+            $semana->carga = 10;
+            $semana->cumprido = 0;
+            $semana->inicio = $comeco;
+            $semana->fim = $final;
+            $semana->monitoria = $monitoria;
+
+            $this->getTableLocator()->get('Semanas')->save($semana);
+            if($final->format('d/m/Y') == $fim->format('d/m/Y')) {
+                break;
+            }
+            $final->modify('+3 day');
+            $comeco = new \DateTime($final->format('Y-m-d'));
+            $id++;
+        }
     }
 
     /**

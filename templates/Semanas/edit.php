@@ -32,7 +32,7 @@
                 <?= $this->Form->control('inicio', ['label'=>'INÍCIO','class'=>'form-control mb-3'])?>
             </div>
             <div class="col-sm-3">
-                <?= $this->Form->control('fim', ['label'=>'INÍCIO','class'=>'form-control mb-3'])?>
+                <?= $this->Form->control('fim', ['label'=>'FIM','class'=>'form-control mb-3'])?>
             </div>
         </div>
 

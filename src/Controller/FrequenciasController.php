@@ -42,7 +42,11 @@ class FrequenciasController extends AppController
         }else{
             $user['professor'] = $this->getTableLocator()->get('Professores')->find()->where(['users_id'=>$user['id']])->first();
         }        $monitoria = $this->getTableLocator()->get('Monitorias')->get($id, ['contain'=>['Professores','Alunos']]);
-        $frequencias = $this->Frequencias->find()->contain(['Semanas.Monitorias'])->where(['Monitorias.id'=>$id]);
+        $frequencias = $this->Frequencias->find()
+            ->contain(['Semanas.Monitorias'])
+            ->where(['Monitorias.id'=>$id])
+            ->order('Frequencias.created')
+            ->all();
 
         $this->set(compact('user','frequencias','monitoria'));
     }
